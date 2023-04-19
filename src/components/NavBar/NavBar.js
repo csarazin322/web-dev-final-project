@@ -12,27 +12,20 @@ const NavBar = () => {
 
   return (
     <div className={styles.NavBar}>
-      <div className='d-inline-flex'>
-        <FontAwesomeIcon icon={faPlateWheat} />
-        <h2>Not yo Mammas Recipes</h2>
-      </div>
-      <p>all the recipes, none of your grandmother's stories</p>
-      <div>
-        <ul className='nav nav-tabs nav-fill'>
-          <li className={path === '/' ? activeNav : nav}>
-            Home
-          </li>
-          <li className={path.startsWith('/recipes') ? activeNav : nav}>
-            Recipes
-          </li>
-          <li className={path.startsWith('/seach') ? activeNav : nav}>
-            Search
-          </li>
-          <li className={path.startsWith('/profile') ? activeNav : nav}>
-            Profile
-          </li>
-        </ul>
-      </div>
+      <ul className='nav nav-tabs nav-fill'>
+        <li className={path === '/' ? activeNav : nav}>
+          Home
+        </li>
+        <li className={path.startsWith('/recipes') ? activeNav : nav}>
+          Recipes
+        </li>
+        <li className={path.startsWith('/seach') ? activeNav : nav}>
+          Search
+        </li>
+        <li className={path.startsWith('/profile') ? activeNav : nav}>
+          Profile
+        </li>
+      </ul>
     </div>
   );
 

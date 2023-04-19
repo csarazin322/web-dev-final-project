@@ -4,12 +4,14 @@ import { Route, Routes } from "react-router";
 import Home from './components/Home/Home';
 import Profile from './components/Profile/Profile';
 import NavBar from './components/NavBar/NavBar';
+import Header from './components/Header/Header';
 
 function App() {
   return (
     <BrowserRouter>
       <div className='container mt-4'>
-        <NavBar></NavBar>
+        <Header />
+        <NavBar />
         <Routes>
           <Route path='/*' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
