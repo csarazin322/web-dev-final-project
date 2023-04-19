@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from './NavBar.module.css';
 import { useLocation } from 'react-router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlateWheat } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
   const location = useLocation()
@@ -14,16 +13,16 @@ const NavBar = () => {
     <div className={styles.NavBar}>
       <ul className='nav nav-tabs nav-fill'>
         <li className={path === '/' ? activeNav : nav}>
-          Home
+          <Link className={styles.link} to='/'>Home</Link>
         </li>
         <li className={path.startsWith('/recipes') ? activeNav : nav}>
-          Recipes
+          <Link className={styles.link} to='/recipes'>Recipes</Link>
         </li>
         <li className={path.startsWith('/seach') ? activeNav : nav}>
-          Search
+          <Link className={styles.link} to='/search'>Search</Link>
         </li>
         <li className={path.startsWith('/profile') ? activeNav : nav}>
-          Profile
+          <Link className={styles.link} to='/profile'>Profile</Link>
         </li>
       </ul>
     </div>
