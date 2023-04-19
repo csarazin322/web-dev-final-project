@@ -12,16 +12,16 @@ const NavBar = () => {
   return (
     <div className={styles.NavBar}>
       <div className='nav nav-tabs nav-fill'>
-        <Link className={`nav-link ${styles.link} ${path === '/' ? 'active' : ''}`} to='/'>
+        <Link className={`nav-link ${path === '/' ? 'active' : ''}`} to='/'>
           Home
         </Link>
-        <Link className={`nav-link ${styles.link} ${path.startsWith('/recipes') ? 'active' : ''}`} to='/recipes'>
+        <Link className={`nav-link ${path.startsWith('/recipes') ? 'active' : ''}`} to='/recipes'>
           Recipes
         </Link>
-        <Link className={`nav-link ${styles.link} ${path.startsWith('/search') ? 'active' : ''}`} to='/search'>
+        <Link className={`nav-link ${path.startsWith('/search') ? 'active' : ''}`} to='/search'>
           Search
         </Link>
-        <Link className={`nav-link ${styles.link} ${path.startsWith('/profile') ? 'active' : ''}`} to='/profile'>
+        <Link className={`nav-link ${path.startsWith('/profile') ? 'active' : ''}`} to='/profile'>
           Profile
         </Link>
       </div>
