@@ -11,20 +11,20 @@ const NavBar = () => {
 
   return (
     <div className={styles.NavBar}>
-      <ul className='nav nav-tabs nav-fill'>
-        <li className={path === '/' ? activeNav : nav}>
-          <Link className={styles.link} to='/'>Home</Link>
-        </li>
-        <li className={path.startsWith('/recipes') ? activeNav : nav}>
-          <Link className={styles.link} to='/recipes'>Recipes</Link>
-        </li>
-        <li className={path.startsWith('/seach') ? activeNav : nav}>
-          <Link className={styles.link} to='/search'>Search</Link>
-        </li>
-        <li className={path.startsWith('/profile') ? activeNav : nav}>
-          <Link className={styles.link} to='/profile'>Profile</Link>
-        </li>
-      </ul>
+      <div className='nav nav-tabs nav-fill'>
+        <Link className={`nav-link ${styles.link} ${path === '/' ? 'active' : ''}`} to='/'>
+          Home
+        </Link>
+        <Link className={`nav-link ${styles.link} ${path.startsWith('/recipes') ? 'active' : ''}`} to='/recipes'>
+          Recipes
+        </Link>
+        <Link className={`nav-link ${styles.link} ${path.startsWith('/search') ? 'active' : ''}`} to='/search'>
+          Search
+        </Link>
+        <Link className={`nav-link ${styles.link} ${path.startsWith('/profile') ? 'active' : ''}`} to='/profile'>
+          Profile
+        </Link>
+      </div>
     </div>
   );
 
