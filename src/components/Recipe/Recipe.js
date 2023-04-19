@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styles from './Recipe.module.css';
 import recipeImg from './recipe.png';
 

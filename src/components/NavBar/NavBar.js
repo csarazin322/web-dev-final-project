@@ -6,8 +6,6 @@ import { Link } from 'react-router-dom';
 const NavBar = () => {
   const location = useLocation()
   const path = location.pathname
-  const activeNav = 'nav-link active bg-primary'
-  const nav = 'nav-link'
 
   return (
     <div className={styles.NavBar}>
