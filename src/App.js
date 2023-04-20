@@ -6,7 +6,7 @@ import Profile from './components/Profile/Profile';
 import NavBar from './components/NavBar/NavBar';
 import Header from './components/Header/Header';
 import Search from './components/Search/Search'
-import RecipesList from './components/RecipesList/RecipesList';
+import Feed from './components/Feed/Feed';
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
         <NavBar />
         <Routes>
           <Route path='/*' element={<Home />} />
-          <Route path='/recipes' element={<RecipesList />} />
+          <Route path='/feed' element={<Feed />} />
           <Route path='/search' element={<Search />} />
           <Route path='/profile' element={<Profile />} />
         </Routes>
