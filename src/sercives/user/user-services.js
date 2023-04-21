@@ -1,7 +1,7 @@
 import axios from "axios";
 const USERS_REST_API_URL = process.env.REST_API_URL ?
     process.env.REST_API_URL + '/users'
-    : 'http://localhost:400/api/users';
+    : 'http://localhost:4000/api/users';
 
 const api = axios.create({
     withCredentials: true,
