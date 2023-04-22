@@ -1,4 +1,5 @@
 const defaultUser = {
+    _id: null,
     username: '',
     password: '',
     firstName: '',
