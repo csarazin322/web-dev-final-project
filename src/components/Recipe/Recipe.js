@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { updateUserThunk } from '../../sercives/user/user-thunks';
 import defaultRecipe from '../../data/default-recipe';
+import { Dispatch } from 'react';
 import defaultUser from '../../data/default-user';
 
 
@@ -17,13 +18,16 @@ const Recipe = ({ recipe = defaultRecipe }) => {
   const [user, setUser] = useState(defaultUser)
   const dispatch = useDispatch()
 
-  const likeRecipe = async () => {
-    console.log(currentUser)
-    console.log(recipe._id)
-    const newLikedRecipes = [...currentUser.likedRecipesIds, recipe._id]
 
-    const updatedUser = { ...currentUser, likedRecipesIds: newLikedRecipes };
-    console.log(updatedUser)
+  const likeRecipe = async () => {
+    const updatedLikes = [...currentUser.likedRecipesIds, recipe._id]
+    const updatedUser = { ...currentUser, likedRecipesIds: updatedLikes };
+    const response = await dispatch(updateUserThunk(updatedUser));
+  }
+
+  const unlikeRecipe = async () => {
+    const updatedLikes = currentUser.likedRecipesIds.filter((recipeId) => recipeId !== recipe._id);
+    const updatedUser = { ...currentUser, likedRecipesIds: updatedLikes };
     const response = await dispatch(updateUserThunk(updatedUser));
   }
 
@@ -39,11 +43,11 @@ const Recipe = ({ recipe = defaultRecipe }) => {
           <p className='card-text'>
             {recipe.description}
           </p>
-
           {currentUser ?
-            <FontAwesomeIcon onClick={likeRecipe} icon={faHeart} color={currentUser.likedRecipesIds.find((recipeId) => recipe._id === recipeId) ? 'red' : ''} />
-            :
-            ''}
+            (currentUser.likedRecipesIds.find((recipeId) => recipe._id === recipeId) ?
+              <FontAwesomeIcon onClick={unlikeRecipe} icon={faHeart} color={'red'} /> :
+              <FontAwesomeIcon onClick={likeRecipe} icon={faHeart} />)
+            : ''}
 
         </div>
       </div>
