@@ -14,4 +14,9 @@ export const updateRecipeThunk = createAsyncThunk (
 export const deleteRecipeThunk = createAsyncThunk (
     "recipes/deleteRecipe",
     async (_id, thunkAPI) => await recipeServices.deleteRecipe(_id)
-)
+);
+
+export const findRecipeByTitleThunk = createAsyncThunk (
+    "recipes/findRecipeByTitle",
+    async (title, thunkAPI) => await recipeServices.deleteRecipe(title)
+);
