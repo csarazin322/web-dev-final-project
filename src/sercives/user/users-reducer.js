@@ -20,6 +20,9 @@ const userSlice = createSlice({
         },
         [profileThunk.fulfilled]: (state, action) => {
             state.currentUser = action.payload
+        },
+        [updateUserThunk.fulfilled]: (state, action) => {
+            state.currentUser = action.payload
         }
     }
 })
