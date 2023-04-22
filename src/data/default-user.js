@@ -1,5 +1,6 @@
 const defaultUser = {
     username: '',
+    password: '',
     firstName: '',
     lastName: '',
     email: '',

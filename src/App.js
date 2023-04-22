@@ -11,6 +11,7 @@ import Search from './components/Search/Search'
 import Feed from './components/Feed/Feed';
 import CurrentUserContext from './redux/currentUserContext';
 import Register from './components/Register/Register';
+import Login from './components/Login/Login';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path='/search' element={<Search />} />
               <Route path='/profile' element={<Profile />} />
               <Route path='/profile/register' element={<Register />} />
+              <Route path='/profile/login' element={<Login />} />
             </Routes>
           </div>
         </BrowserRouter>
