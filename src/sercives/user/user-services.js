@@ -28,7 +28,7 @@ export const createUser = async (user) => {
 };
 
 export const updateUser = async (user) => {
-    const response = await api.post(`${USERS_REST_API_URL}/${user._id}`, user)
+    const response = await api.put(`${USERS_REST_API_URL}/${user._id}`, user)
     return response.data
 };
 
