@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginThunk, profileThunk, registerThunk, logoutThunk } from "./user-thunks";
+import { loginThunk, profileThunk, registerThunk, logoutThunk, updateUserThunk } from "./user-thunks";
 const initialState = {
     currentUser: null
 }
