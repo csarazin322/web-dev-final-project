@@ -8,7 +8,7 @@ const defaultUser = {
     isChef: false,
     likedRecipesIds: [],
     chefsFollowingIds: [],
-    createdRecipesIds: []
+    createdRecipeIds: []
 }
 
 export default defaultUser;
