@@ -37,9 +37,13 @@ const Profile = () => {
   }
 
   const getRecipesCreatedById = useCallback(async () => {
+    console.log('getting created recipes')
+    console.log(profile)
     if (profile) {
-      const recipesFromDB = await Promise.all(profile.createdRecipesIds.map(async (rid) => await findRecipeById(rid)))
-      console.log('these are the recipes created')
+      console.log('these are the profiles created recipes')
+      console.log(profile.createdRecipeIds)
+      const recipesFromDB = await Promise.all(profile.createdRecipeIds.map(async (rid) => await findRecipeById(rid)))
+      console.log('got here more')
       console.log(recipesFromDB)
       setChefCreatedRecipes(recipesFromDB.map((recipe) => {
         return (
@@ -68,10 +72,8 @@ const Profile = () => {
 
   const getChefsYouFollowById = useCallback(async () => {
     if (profile) {
-      console.log(profile.chefsFollowingIds)
       const chefsFromDB = await Promise.all(profile.chefsFollowingIds.map(async (cid) => await findUserById(cid)))
       setConsumerChefsFollowing(chefsFromDB.map((chef) => {
-        console.log(chef)
         return (
           <li className='list-group-item'>
             <div className='row'>
@@ -91,10 +93,11 @@ const Profile = () => {
 
 
   useEffect(() => {
+    console.log('doing use effect for getting recipes created or consumer stuff')
     if (profile && currentUser && profile._id === currentUser._id) {
+      console.log('got here')
       console.log(profile)
       if (profile.isChef) {
-        console.log(profile)
         getRecipesCreatedById()
       } else {
         getLikedRecipesById()
@@ -132,11 +135,16 @@ const Profile = () => {
           profile && profile.isChef ?
             (
               <div className='col-12'>
-                <h4>Recipes Created</h4>
-                <div className='row mb-3'>
-                  {console.log(chefCreatedRecipes)}
-                  {chefCreatedRecipes}
-                </div>
+                <ul className='list-group'>
+                  <li className='list-group-item'>
+                    <h4 className='mb-0'>Recipes Created</h4>
+                  </li>
+                  <li className='list-group-item'>
+                    <div className='row mt-3'>
+                      {chefCreatedRecipes}
+                    </div>
+                  </li>
+                </ul>
               </div>
             )
             : (
