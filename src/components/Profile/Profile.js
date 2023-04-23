@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './Profile.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import Login from '../Login/Login'
@@ -15,6 +15,7 @@ const Profile = () => {
   const { username } = useParams()
   const { currentUser } = useSelector((state) => state.users)
   const [profile, setProfile] = useState(defaultUser)
+  const [consumerResults, setConsumerResults] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -34,52 +35,26 @@ const Profile = () => {
     navigate('/profile/login')
   }
 
-  // const getLikedRecipesById = () => {
-  //   console.log('these are my recipes')
-  //   console.log(currentUser.likedRecipesIds)
-  //   const likedRecipesObj = currentUser.likedRecipesIds.map(async (recipeId) => {
-  //     return await findRecipeById(recipeId)
-  //   })
-  //   console.log(likedRecipesObj)
-  //   const recipesHtml = likedRecipesObj.map((recepie) => (
-  //     <div className='col-7'>
-  //       <h6>
-  //         Your Recipe Book
-  //       </h6>
-  //       {() => {
-  //         const recipes = getLikedRecipesById()
-  //         return recipes.map((recipe) => (
-  //           <Recipe recipe={recipe} />
-  //         ))
-  //       }}
-  //     </div>))
-  //   return recipesHtml
-  // }
-  const [likedRecipes, setLikedRecipes] = useState([])
-  const [likedRecipesHtml, setLikedRecipesHtml] = useState([])
-  const [consumerResults, setConsumerResults] = useState([])
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getLikedRecipesById = async () => {
-    const recipesFromDB = await Promise.all(profile.likedRecipesIds.map(async (rid) => await findRecipeById(rid)))
-    setLikedRecipes(recipesFromDB)
-    setConsumerResults(likedRecipes.map((recipe) => {
-      return (
-        <div className='col-6 mb-3'>
-          <Recipe recipe={recipe} />
-        </div>
-      )
+  const getLikedRecipesById = useCallback(async () => {
+    if (profile) {
+      const recipesFromDB = await Promise.all(profile.likedRecipesIds.map(async (rid) => await findRecipeById(rid)))
+      setConsumerResults(recipesFromDB.map((recipe) => {
+        return (
+          <div className='col-6 mb-3'>
+            <Recipe recipe={recipe} />
+          </div>
+        )
+      }
+      ))
     }
-    ))
-  }
+  }, [profile])
 
 
   useEffect(() => {
     if (profile && currentUser && profile._id === currentUser._id) {
       getLikedRecipesById()
-      return
     }
-  }, [profile, currentUser])
+  }, [currentUser, profile, getLikedRecipesById])
 
   useEffect(() => {
     console.log(username)
