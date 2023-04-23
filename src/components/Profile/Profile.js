@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from './Profile.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import Login from '../Login/Login'
 import { useDispatch, useSelector } from 'react-redux';
 import defaultUser from '../../data/default-user';
 import { findUserByUsername } from '../../sercives/user/user-services';
@@ -85,12 +84,6 @@ const Profile = () => {
           )
         }
       </div>
-
-      {/* <div className='row'>
-        <div className='mb-3 d-flex justify-content-center'>
-          <button className='btn btn-warning w-50' onClick={logout}>Logout</button>
-        </div>
-      </div> */}
     </div>
   );
 

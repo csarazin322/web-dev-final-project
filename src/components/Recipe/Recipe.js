@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import styles from './Recipe.module.css';
 import recipeImg from './recipe.png';
 import { useDispatch, useSelector } from 'react-redux';
