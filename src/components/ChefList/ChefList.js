@@ -1,0 +1,28 @@
+import React from 'react';
+import styles from './ChefList.module.css';
+import ChefCard from '../ChefCard.ChefCard'
+import { findAllUsers } from '../../sercives/user/user-services';
+
+
+const listOfChefs = findAllUsers().filter((user) => user.isChef === true);
+
+const ChefList = () => (
+  <div className="styles.ChefList">
+    <div className='row mt-3'>
+
+    {listOfChefs.map((_) => {
+        return (
+        <div className='row'>
+            {<ChefCard></ChefCard>}
+        </div>
+        )
+    })}
+    </div>
+  </div>
+);
+
+ChefList.propTypes = {};
+
+ChefList.defaultProps = {};
+
+export default ChefList;

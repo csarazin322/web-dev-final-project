@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { updateUserThunk } from '../../sercives/user/user-thunks';
 import defaultRecipe from '../../data/default-recipe';
-import { Dispatch } from 'react';
+import { useDispatch } from 'react-redux';
 import defaultUser from '../../data/default-user';
 
 
@@ -15,7 +15,6 @@ const Recipe = ({ recipe = defaultRecipe }) => {
   console.log(recipe)
 
   const { currentUser } = useSelector((state) => state.users);
-  const [user, setUser] = useState(defaultUser)
   const dispatch = useDispatch()
 
 
