@@ -5,6 +5,7 @@ import defaultRecipe from '../../data/default-recipe';
 import ChefList from '../ChefList/ChefList';
 import { findAllRecipes } from '../../sercives/recipe/recipe-services';
 
+console.log(findAllRecipes());
 const listOfRecipes = findAllRecipes().slice(0, 20);
 
 const Home = () => (
