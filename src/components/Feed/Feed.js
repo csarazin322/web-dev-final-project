@@ -1,8 +1,14 @@
 import React from 'react';
 import styles from './Feed.module.css';
 import Recipe from '../Recipe/Recipe';
+import { findAllRecipes } from '../../sercives/recipe/recipe-services';
 
-const listOfRecipes = ['weep', 'woo', 'thing', 'it']
+
+const { currentUser } = useSelector((state) => state.users);
+
+const listOfRecipes = currentUser? findAllRecipes().filter((recipe) => currentUser.chefsFollowingIds.includes(recipe.ownerId)).slice(0,20)
+: findAllRecipes().slice(0, 20);
+;
 
 const Feed = () => (
   <div className={styles.Feed}>

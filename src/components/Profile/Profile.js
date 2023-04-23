@@ -46,7 +46,7 @@ const Profile = () => {
           <h3 className='mb-0'>{profile.username}</h3>
         </div>
       </div>
-      shiiit man im logged info
+      shiiit man im logged in
 
       <div className='row'>
         <div className='mb-3 d-flex justify-content-center'>

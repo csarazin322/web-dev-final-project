@@ -3,8 +3,9 @@ import Recipe from '../Recipe/Recipe';
 import styles from './Home.module.css';
 import defaultRecipe from '../../data/default-recipe';
 import ChefList from '../ChefList/ChefList';
+import { findAllRecipes } from '../../sercives/recipe/recipe-services';
 
-const listOfRecipes = ['wee'];
+const listOfRecipes = findAllRecipes().slice(0, 20);
 
 const Home = () => (
   <div className={styles.Home}>
