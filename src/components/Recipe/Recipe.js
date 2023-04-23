@@ -6,29 +6,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { updateUserThunk } from '../../sercives/user/user-thunks';
 import defaultRecipe from '../../data/default-recipe';
-import { Dispatch } from 'react';
-import defaultUser from '../../data/default-user';
 
 
 const Recipe = ({ recipe = defaultRecipe }) => {
-  console.log(`this is the recipe id ${recipe._id}`)
-  console.log(recipe)
 
   const { currentUser } = useSelector((state) => state.users);
-  const [user, setUser] = useState(defaultUser)
   const dispatch = useDispatch()
 
 
   const likeRecipe = async () => {
     const updatedLikes = [...currentUser.likedRecipesIds, recipe._id]
     const updatedUser = { ...currentUser, likedRecipesIds: updatedLikes };
-    const response = await dispatch(updateUserThunk(updatedUser));
+    await dispatch(updateUserThunk(updatedUser));
   }
 
   const unlikeRecipe = async () => {
     const updatedLikes = currentUser.likedRecipesIds.filter((recipeId) => recipeId !== recipe._id);
     const updatedUser = { ...currentUser, likedRecipesIds: updatedLikes };
-    const response = await dispatch(updateUserThunk(updatedUser));
+    await dispatch(updateUserThunk(updatedUser));
   }
 
 

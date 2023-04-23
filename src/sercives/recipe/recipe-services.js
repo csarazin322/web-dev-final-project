@@ -4,12 +4,12 @@ const RECIPES_REST_API_URL = process.env.REST_API_URL ?
     : 'http://localhost:4000/api/recipes';
 
 const api = axios.create({
-    //withCredentials: true,
+    // withCredentials: true,
 });
 
 export const findAllRecipes = async () => {
     const response = await api.get(RECIPES_REST_API_URL)
-    return response.data
+    return await response.data
 };
 
 export const findRecipeById = async (_id) => {
@@ -33,6 +33,6 @@ export const deleteRecipe = async (recipe) => {
 };
 
 export const findRecipeByTitle = async (title) => {
-    const response = await api.get(`${USERS_REST_API_URL}/title/${title}`);
+    const response = await api.get(`${RECIPES_REST_API_URL}/title/${title}`);
     return response.data;
 };
