@@ -14,6 +14,7 @@ const Profile = () => {
   const { username } = useParams()
   const { currentUser } = useSelector((state) => state.users)
   const [profile, setProfile] = useState(defaultUser)
+  const [chefCreatedRecipes, setChefCreatedRecipes] = useState([])
   const [consumerSavedRecipes, setConsumerSavedRecipes] = useState([])
   const [consumerChefsFollowing, setConsumerChefsFollowing] = useState([])
   const navigate = useNavigate()
@@ -35,6 +36,20 @@ const Profile = () => {
     navigate('/profile/login')
   }
 
+  const getRecipesCreatedById = useCallback(async () => {
+    if (profile) {
+      const recipesFromDB = await Promise.all(profile.createdRecipesIds.map(async (rid) => await findRecipeById(rid)))
+      setChefCreatedRecipes(recipesFromDB.map((recipe) => {
+        return (
+          <div className='col-4 mb-3' key={recipe._id}>
+            <Recipe recipe={recipe} />
+          </div>
+        )
+      }
+      ))
+    }
+  }, [profile])
+
   const getLikedRecipesById = useCallback(async () => {
     if (profile) {
       const recipesFromDB = await Promise.all(profile.likedRecipesIds.map(async (rid) => await findRecipeById(rid)))
@@ -51,10 +66,22 @@ const Profile = () => {
 
   const getChefsYouFollowById = useCallback(async () => {
     if (profile) {
+      console.log(profile.chefsFollowingIds)
       const chefsFromDB = await Promise.all(profile.chefsFollowingIds.map(async (cid) => await findUserById(cid)))
       setConsumerChefsFollowing(chefsFromDB.map((chef) => {
+        console.log(chef)
         return (
-          <div></div>
+          <li className='list-group-item'>
+            <div className='row'>
+              <div className='col-8'>
+                <h6>{chef.username}</h6>
+                <p className='mb-0'>{`${chef.createdRecipeIds.length} Recipes Created`}</p>
+              </div>
+              <div className='col-4'>
+                <button className='btn btn-primary float-end w-100' style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>Follow</button>
+              </div>
+            </div>
+          </li>
         )
       }))
     }
@@ -63,9 +90,16 @@ const Profile = () => {
 
   useEffect(() => {
     if (profile && currentUser && profile._id === currentUser._id) {
-      getLikedRecipesById()
+      console.log(profile)
+      if (profile.isChef) {
+        console.log('doing this')
+        getRecipesCreatedById()
+      } else {
+        getLikedRecipesById()
+        getChefsYouFollowById()
+      }
     }
-  }, [currentUser, profile, getLikedRecipesById])
+  }, [currentUser, profile, getLikedRecipesById, getChefsYouFollowById, getRecipesCreatedById])
 
   useEffect(() => {
     console.log(username)
@@ -95,10 +129,10 @@ const Profile = () => {
         {
           profile && profile.isChef ?
             (
-              <div className='col-7'>
+              <div className='col-12'>
                 <h4>Recipes Created</h4>
                 <div className='row mb-3'>
-                  {consumerSavedRecipes}
+                  {chefCreatedRecipes}
                 </div>
               </div>
             )
@@ -120,7 +154,7 @@ const Profile = () => {
         {
           profile && profile.isChef ?
             (
-              ''
+              <div></div>
             )
             : (
               <div className='col-4'>
@@ -128,6 +162,7 @@ const Profile = () => {
                   <li className="list-group-item">
                     <h4 className='float-end mb-0'>Chefs Followed</h4>
                   </li>
+                  {consumerChefsFollowing}
                 </ul>
               </div>
             )
