@@ -2,18 +2,21 @@ import React from 'react';
 import styles from './ChefList.module.css';
 import ChefCard from '../ChefCard/ChefCard'
 import { findAllChefs } from '../../sercives/user/user-services';
+import sampleChefs from '../../data/sample-chefs';
 
 
-const listOfChefs = findAllChefs();
+const listOfChefs = sampleChefs;//['waaa', 'woo', 'wee'];//findAllChefs();
 
 const ChefList = () => (
   <div className="styles.ChefList">
     <div className='row mt-3'>
 
-    {listOfChefs.map((_) => {
+
+
+    {listOfChefs.map((chef) => {
         return (
         <div className='row'>
-            {<ChefCard></ChefCard>}
+            {<ChefCard user={chef}></ChefCard>}
         </div>
         )
     })}

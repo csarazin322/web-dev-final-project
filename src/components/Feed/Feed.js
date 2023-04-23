@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Feed.module.css';
 import Recipe from '../Recipe/Recipe';
-import { findAllRecipes } from '../../sercives/recipe/recipe-services';
+import { findRecipes } from '../../sercives/recipe/recipe-services';
 import { useSelector, useDispatch } from 'react-redux';
 
 
@@ -9,8 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 const Feed = () => {
   const { currentUser } = useSelector((state) => state.users);
 
-  const listOfRecipes = currentUser? findAllRecipes().filter((recipe) => currentUser.chefsFollowingIds.includes(recipe.ownerId))//.slice(0,20)
-  : findAllRecipes();//.slice(0, 20);
+  const listOfRecipes = ['wee', 'woo', 'waa'];//currentUser? findRecipes().filter((recipe) => currentUser.chefsFollowingIds.includes(recipe.ownerId))//.slice(0,20)
+  //: findRecipes().slice(0, 20);
   
   return (
   <div className={styles.Feed}>

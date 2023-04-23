@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { updateUserThunk } from '../../sercives/user/user-thunks';
 import defaultUser from '../../data/default-user';
 
-const ChefCard = (user = defaultUser) => {
+const ChefCard = ({user = defaultUser}) => {
 
     const { currentUser } = useSelector((state) => state.users);
     const dispatch = useDispatch()
@@ -26,17 +26,19 @@ const ChefCard = (user = defaultUser) => {
     <div className={styles.ChefCard}>
         <div className='card'>
             <div className='card-body'>
+                <div className='col-8'>
                 <h5 className='card-title'>
-                    {user.firstName + user.lastName}
+                    {user.firstName + ' ' + user.lastName}
                 </h5>
-                <p>
                     {user.username}
-                </p>
+                </div>
+                <div className='col-4'>
                 {currentUser ?
                     (currentUser.chefsFollowingIds.find((chefId) => user._id === chefId) ?
                     <button onClick={unfollowChef} className={'btn btn-secondary'}> Unfollow </button> :
                     <button onClick={followChef} className={'btn btn-primary'}> Follow </button>)
                 : ''}
+                </div>
             </div>
         </div>
     </div>

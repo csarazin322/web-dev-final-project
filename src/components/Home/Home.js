@@ -3,10 +3,10 @@ import Recipe from '../Recipe/Recipe';
 import styles from './Home.module.css';
 import defaultRecipe from '../../data/default-recipe';
 import ChefList from '../ChefList/ChefList';
-import { findAllRecipes } from '../../sercives/recipe/recipe-services';
+import { findRecipes } from '../../sercives/recipe/recipe-services';
 
-console.log(findAllRecipes());
-const listOfRecipes = findAllRecipes().slice(0, 20);
+console.log(findRecipes());
+const listOfRecipes = ['wee', 'woo', 'waa']; //findRecipes().slice(0, 20);
 
 const Home = () => (
   <div className={styles.Home}>
