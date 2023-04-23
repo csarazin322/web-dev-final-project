@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import styles from './Recipe.module.css';
 import recipeImg from './recipe.png';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,12 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { updateUserThunk } from '../../sercives/user/user-thunks';
 import defaultRecipe from '../../data/default-recipe';
-import defaultUser from '../../data/default-user';
 
 
 const Recipe = ({ recipe = defaultRecipe }) => {
-  console.log(`this is the recipe id ${recipe._id}`)
-  console.log(recipe)
 
   const { currentUser } = useSelector((state) => state.users);
   const dispatch = useDispatch()
@@ -20,13 +16,13 @@ const Recipe = ({ recipe = defaultRecipe }) => {
   const likeRecipe = async () => {
     const updatedLikes = [...currentUser.likedRecipesIds, recipe._id]
     const updatedUser = { ...currentUser, likedRecipesIds: updatedLikes };
-    const response = await dispatch(updateUserThunk(updatedUser));
+    await dispatch(updateUserThunk(updatedUser));
   }
 
   const unlikeRecipe = async () => {
     const updatedLikes = currentUser.likedRecipesIds.filter((recipeId) => recipeId !== recipe._id);
     const updatedUser = { ...currentUser, likedRecipesIds: updatedLikes };
-    const response = await dispatch(updateUserThunk(updatedUser));
+    await dispatch(updateUserThunk(updatedUser));
   }
 
 
