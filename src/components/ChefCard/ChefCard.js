@@ -11,8 +11,8 @@ const ChefCard = (user = defaultUser) => {
     const dispatch = useDispatch()
 
     const followChef = async () => {
-        const updatedFollows = [...currentUser.likedRecipesIds, user._id]
-        const updatedUser = { ...currentUser, likedRecipesIds: updatedLikes };
+        const updatedFollows = [...currentUser.chefsFollowingIds, user._id]
+        const updatedUser = { ...currentUser, chefsFollowingIds: updatedFollows };
         const response = await dispatch(updateUserThunk(updatedUser));
       }
     
@@ -33,11 +33,13 @@ const ChefCard = (user = defaultUser) => {
                     {user.username}
                 </p>
                 {currentUser ?
-                    (currentUser.chefsFollowingIds.find((chefId) => chef._id === chefId) ?
-                    <Button onClick={unfollowChef} className={'btn btn-secondary'}> Unfollow </Button> :
-                    <Button onClick={followChef} className={'btn btn-primary'}> Follow </Button>)
+                    (currentUser.chefsFollowingIds.find((chefId) => user._id === chefId) ?
+                    <button onClick={unfollowChef} className={'btn btn-secondary'}> Unfollow </button> :
+                    <button onClick={followChef} className={'btn btn-primary'}> Follow </button>)
                 : ''}
             </div>
         </div>
     </div>
     );}
+
+export default ChefCard;

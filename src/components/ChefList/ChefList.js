@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './ChefList.module.css';
-import ChefCard from '../ChefCard.ChefCard'
-import { findAllUsers } from '../../sercives/user/user-services';
+import ChefCard from '../ChefCard/ChefCard'
+import { findAllChefs } from '../../sercives/user/user-services';
 
 
-const listOfChefs = findAllUsers().filter((user) => user.isChef === true);
+const listOfChefs = findAllChefs();
 
 const ChefList = () => (
   <div className="styles.ChefList">

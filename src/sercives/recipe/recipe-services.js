@@ -33,6 +33,6 @@ export const deleteRecipe = async (recipe) => {
 };
 
 export const findRecipeByTitle = async (title) => {
-    const response = await api.get(`${USERS_REST_API_URL}/title/${title}`);
+    const response = await api.get(`${RECIPES_REST_API_URL}/title/${title}`);
     return response.data;
 };
