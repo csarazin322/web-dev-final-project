@@ -39,6 +39,8 @@ const Profile = () => {
   const getRecipesCreatedById = useCallback(async () => {
     if (profile) {
       const recipesFromDB = await Promise.all(profile.createdRecipesIds.map(async (rid) => await findRecipeById(rid)))
+      console.log('these are the recipes created')
+      console.log(recipesFromDB)
       setChefCreatedRecipes(recipesFromDB.map((recipe) => {
         return (
           <div className='col-4 mb-3' key={recipe._id}>
@@ -92,7 +94,7 @@ const Profile = () => {
     if (profile && currentUser && profile._id === currentUser._id) {
       console.log(profile)
       if (profile.isChef) {
-        console.log('doing this')
+        console.log(profile)
         getRecipesCreatedById()
       } else {
         getLikedRecipesById()
@@ -132,6 +134,7 @@ const Profile = () => {
               <div className='col-12'>
                 <h4>Recipes Created</h4>
                 <div className='row mb-3'>
+                  {console.log(chefCreatedRecipes)}
                   {chefCreatedRecipes}
                 </div>
               </div>
@@ -154,7 +157,7 @@ const Profile = () => {
         {
           profile && profile.isChef ?
             (
-              <div></div>
+              ''
             )
             : (
               <div className='col-4'>

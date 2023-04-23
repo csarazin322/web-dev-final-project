@@ -1,34 +1,34 @@
 import React, { useState } from 'react';
 import styles from './Search.module.css'
-import ssToken from '../../shutterstock/token.js'
+// import ssToken from '../../shutterstock/token.js'
 // import * as sstk from "shutterstock-api"
-import * as sstk from "shutterstock-api"
+// import * as sstk from "shutterstock-api"
 
 const Search = () => {
-  sstk.setAccessToken(ssToken)
+  // sstk.setAccessToken(ssToken)
 
-  const api = new sstk.ImagesApi();
+  // const api = new sstk.ImagesApi();
 
-  const queryParams = {
-    "query": "carbonara",
-    "page": "1",
-    "per_page": "5"
-  };
+  // const queryParams = {
+  //   "query": "carbonara",
+  //   "page": "1",
+  //   "per_page": "5"
+  // };
 
-  const [ssimages, setSsimages] = useState([])
+  // const [ssimages, setSsimages] = useState([])
 
-  const images = api.searchImages(queryParams)
-    .then(({ data }) => {
-      console.log(data);
-      setSsimages(data)
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  // const images = api.searchImages(queryParams)
+  //   .then(({ data }) => {
+  //     console.log(data);
+  //     setSsimages(data)
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
 
   return (
     <div className={styles.Search}>
-      {`${JSON.stringify(ssimages)}`}
+      {/* {`${JSON.stringify(ssimages)}`} */}
     </div>
   );
 }
