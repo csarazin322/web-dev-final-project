@@ -6,6 +6,128 @@ import { createRecipe } from '../../sercives/recipe/recipe-services';
 import { useNavigate } from 'react-router';
 import { current } from '@reduxjs/toolkit';
 
+
+// Ingredients and Steps adapted from https://github.com/nishant-666/Dynamic-Forms/blob/master/src/App.js
+
+const Ingredients = ([newRecipe, setNewRecipe]) => {
+    const [formFields, setFormFields] = useState([
+      { ingredient : '', amount : '', measurement : '' },
+    ])
+  
+    const handleFormChange = (event, index) => {
+      let data = [...formFields];
+      data[index][event.target.name] = event.target.value;
+      setFormFields(data);
+    }
+  
+    const submit = (e) => {
+      e.preventDefault();
+      setNewRecipe({ ...newRecipe, ingredients : e})
+    }
+  
+    const addFields = () => {
+      let object = {
+        ingredient : '',
+        amount : '',
+        measurements : '',
+      }
+  
+      setFormFields([...formFields, object])
+    }
+  
+    const removeFields = (index) => {
+      let data = [...formFields];
+      data.splice(index, 1)
+      setFormFields(data)
+    }
+  
+    return (
+      <div className="App">
+        <form onSubmit={submit}>
+          {formFields.map((form, index) => {
+            return (
+              <div key={index}>
+                <input
+                  name='ingredient'
+                  placeholder='ingredient'
+                  onChange={event => handleFormChange(event, index)}
+                  value={form.ingredient}
+                />
+                <input
+                  name='amount'
+                  placeholder='amount'
+                  onChange={event => handleFormChange(event, index)}
+                  value={form.amount}
+                />
+                <input
+                  name='measurement'
+                  placeholder='measurement'
+                  onChange={event => handleFormChange(event, index)}
+                  value={form.measurement}
+                />
+                <button onClick={() => removeFields(index)}>Remove</button>
+              </div>
+            )
+          })}
+        </form>
+        <button onClick={addFields}>Add More..</button>
+        <br />
+        <button onClick={submit}>Save Ingredients</button>
+      </div>
+    );
+}
+
+const Steps = ([newRecipe, setNewRecipe]) => {
+    const [formFields, setFormFields] = useState([
+      '',
+    ])
+  
+    const handleFormChange = (event, index) => {
+      let data = [...formFields];
+      data[index][event.target.name] = event.target.value;
+      setFormFields(data);
+    }
+  
+    const submit = (e) => {
+      e.preventDefault();
+      setNewRecipe({ ...newRecipe, steps : e})
+    }
+  
+    const addFields = () => {  
+      setFormFields([...formFields, ''])
+    }
+  
+    const removeFields = (index) => {
+      let data = [...formFields];
+      data.splice(index, 1)
+      setFormFields(data)
+    }
+  
+    return (
+      <div className="App">
+        <form onSubmit={submit}>
+          {formFields.map((form, index) => {
+            return (
+              <div key={index}>
+                <input
+                  name='step'
+                  placeholder='step'
+                  onChange={event => handleFormChange(event, index)}
+                  value={form.name}
+                />
+                <button onClick={() => removeFields(index)}>Remove</button>
+              </div>
+            )
+          })}
+        </form>
+        <button onClick={addFields}>Add More..</button>
+        <br />
+        <button onClick={submit}>Save Steps</button>
+      </div>
+    );
+}
+
+
 const MakeRecipe = (imageId = '') => {
   const [newRecipe, setNewRecipe] = useState(defaultRecipe);
 
@@ -64,7 +186,10 @@ const MakeRecipe = (imageId = '') => {
 
       {/* username and password row */}
       <div className='row mb-2'>
-        
+        <Ingredients></Ingredients>
+      </div>
+      <div className='row mb-2'>
+        <Steps></Steps>
       </div>
 
       <div className='row mb-2'>
