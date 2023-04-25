@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from './Profile.module.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import defaultUser from '../../data/default-user';
 import { findUserById, findUserByUsername } from '../../sercives/user/user-services';
@@ -21,11 +21,11 @@ const Profile = () => {
   const dispatch = useDispatch()
 
 
-  const getProfile = async () => {
+  const getProfile = useCallback(async () => {
     console.log('getting profile')
     const action = await dispatch(profileThunk())
     action.payload ? setProfile(action.payload) : navigate('/profile/login')
-  }
+  }, [])
 
   const getUserByUsername = async () => {
     const user = await findUserByUsername(username)
@@ -35,6 +35,17 @@ const Profile = () => {
   const logout = async () => {
     await dispatch(logoutThunk())
     navigate('/profile/login')
+  }
+
+  const followUnfollowButton = (chefId) => {
+    return (profile ? (
+      profile.chefsFollowingIds.find((cid) => cid === chefId) ? (
+        <button className='btn btn-danger float-end' style={{ width: '30%' }}>Unfollow</button >
+      )
+        : (
+          <button className='btn btn-primary float-end' style={{ width: '30%' }}>Follow</button >
+        )
+    ) : '')
   }
 
   const getRecipesCreatedById = useCallback(async () => {
@@ -71,14 +82,14 @@ const Profile = () => {
       setConsumerChefsFollowing(chefsFromDB.map((chef) => {
         return (
           <li className='list-group-item'>
-            <div className='row'>
-              <div className='col-8'>
-                <h6>{chef.username}</h6>
-                <p className='mb-0'>{`${chef.createdRecipeIds.length} Recipes Created`}</p>
-              </div>
-              <div className='col-4'>
-                <button className='btn btn-primary float-end w-100' style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>Follow</button>
-              </div>
+            <div className='d-flex justify-content-between'>
+              <Link style={{ textDecoration: 'none' }} className='' to={`/profile/username/${chef.username}`}>
+                <div>
+                  <h6>{chef.username}</h6>
+                  <p className='mb-0'>{`${chef.createdRecipeIds.length} Recipes Created`}</p>
+                </div>
+              </Link>
+              {followUnfollowButton(chef._id)}
             </div>
           </li>
         )
@@ -100,7 +111,7 @@ const Profile = () => {
 
   useEffect(() => {
     username ? getUserByUsername() : getProfile()
-  }, [username])
+  }, [username, getProfile])
 
   return (
     <div className={styles.Profile}>
@@ -120,7 +131,7 @@ const Profile = () => {
         </div><div className='row mb-4'>
             {profile.isChef ?
               (
-                <div className='col-12'>
+                <div className='col-12 mb-3'>
                   <ul className='list-group'>
                     <li className='list-group-item'>
                       <h4 className='mb-0'>Recipes Created</h4>
@@ -134,33 +145,29 @@ const Profile = () => {
                 </div>
               )
               : (
-                <div className='col-8'>
+                <><div className='col-sm-12 col-md-12 col-lg-12 col-xl-8 mb-3'>
                   <ul className='list-group'>
                     <li className='list-group-item'>
-                      <h4 className='mb-0'>Liked Recipes</h4>
+                      <h4 className='mb-0'>
+                        Liked Recipes
+                      </h4>
                     </li>
-                    <li className='list-group-item'>
+                    <li id='likedRecipes' className='list-group-item'>
                       <div className='row mt-3'>
                         {consumerSavedRecipes}
                       </div>
                     </li>
                   </ul>
-                </div>
+                </div><div className='col-sm-12 col-md-12 col-lg-12 col-xl-4 mb-3'>
+                    <ul className="list-group">
+                      <li className="list-group-item">
+                        <h4 className='float-end mb-0'>Chefs Followed</h4>
+                      </li>
+                      {consumerChefsFollowing}
+                    </ul>
+                  </div></>
               )}
-            {profile.isChef ?
-              (
-                ''
-              )
-              : (
-                <div className='col-4'>
-                  <ul className="list-group">
-                    <li className="list-group-item">
-                      <h4 className='float-end mb-0'>Chefs Followed</h4>
-                    </li>
-                    {consumerChefsFollowing}
-                  </ul>
-                </div>
-              )}
+
           </div></>
         )
         : (

@@ -30,5 +30,5 @@ export const findUserByUsernameThunk = createAsyncThunk(
 
 export const updateUserThunk = createAsyncThunk(
     "users/update",
-    async (user) => await userServices.updateUser(user)
+    async (user, thunkAPI) => await userServices.updateUser(user)
 );
