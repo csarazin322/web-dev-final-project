@@ -6,7 +6,7 @@ import defaultUser from '../../data/default-user';
 import { findUserById, findUserByUsername } from '../../sercives/user/user-services';
 import { logoutThunk, profileThunk } from '../../sercives/user/user-thunks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faKitchenSet } from '@fortawesome/free-solid-svg-icons';
 import { findRecipeById } from '../../sercives/recipe/recipe-services';
 import Recipe from '../Recipe/Recipe';
 
@@ -22,6 +22,7 @@ const Profile = () => {
 
 
   const getProfile = async () => {
+    console.log('getting profile')
     const action = await dispatch(profileThunk())
     action.payload ? setProfile(action.payload) : navigate('/profile/login')
   }
@@ -37,14 +38,8 @@ const Profile = () => {
   }
 
   const getRecipesCreatedById = useCallback(async () => {
-    console.log('getting created recipes')
-    console.log(profile)
     if (profile) {
-      console.log('these are the profiles created recipes')
-      console.log(profile.createdRecipeIds)
       const recipesFromDB = await Promise.all(profile.createdRecipeIds.map(async (rid) => await findRecipeById(rid)))
-      console.log('got here more')
-      console.log(recipesFromDB)
       setChefCreatedRecipes(recipesFromDB.map((recipe) => {
         return (
           <div className='col-4 mb-3' key={recipe._id}>
@@ -93,10 +88,7 @@ const Profile = () => {
 
 
   useEffect(() => {
-    console.log('doing use effect for getting recipes created or consumer stuff')
-    if (profile && currentUser && profile._id === currentUser._id) {
-      console.log('got here')
-      console.log(profile)
+    if (profile) {
       if (profile.isChef) {
         getRecipesCreatedById()
       } else {
@@ -107,78 +99,78 @@ const Profile = () => {
   }, [currentUser, profile, getLikedRecipesById, getChefsYouFollowById, getRecipesCreatedById])
 
   useEffect(() => {
-    console.log(username)
     username ? getUserByUsername() : getProfile()
   }, [username])
 
   return (
     <div className={styles.Profile}>
-
-      <div className='row mt-4 mb-3'>
-        <div className='col-6 align-items-center d-inline-flex'>
-          <FontAwesomeIcon className='me-2' size='xl' icon={faUser}></FontAwesomeIcon>
-          <h3 className='mb-0'>{profile.username}</h3>
-        </div>
-        <div className='col-6'>
-          <div className='float-end'>
-            {
-              (profile && currentUser && profile._id === currentUser._id) ?
-                <button className='btn btn-warning' onClick={logout}>Logout</button>
-                : (profile.isChef) ? <button className='btn btn-primary'>Follow</button> : ''
-
-            }
+      {profile ?
+        (<><div className='row mt-4 mb-3'>
+          <div className='col-6 align-items-center d-inline-flex'>
+            <FontAwesomeIcon className='me-2' size='xl' icon={profile.isChef ? faKitchenSet : faUser}></FontAwesomeIcon>
+            <h3 className='mb-0'>{profile.username}</h3>
           </div>
-        </div>
-      </div>
-      <div className='row mb-4'>
-        {
-          profile && profile.isChef ?
-            (
-              <div className='col-12'>
-                <ul className='list-group'>
-                  <li className='list-group-item'>
-                    <h4 className='mb-0'>Recipes Created</h4>
-                  </li>
-                  <li className='list-group-item'>
-                    <div className='row mt-3'>
-                      {chefCreatedRecipes}
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            )
-            : (
-              <div className='col-8'>
-                <ul className='list-group'>
-                  <li className='list-group-item'>
-                    <h4 className='mb-0'>Liked Recipes</h4>
-                  </li>
-                  <li className='list-group-item'>
-                    <div className='row mt-3'>
-                      {consumerSavedRecipes}
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            )
-        }
-        {
-          profile && profile.isChef ?
-            (
-              ''
-            )
-            : (
-              <div className='col-4'>
-                <ul className="list-group">
-                  <li className="list-group-item">
-                    <h4 className='float-end mb-0'>Chefs Followed</h4>
-                  </li>
-                  {consumerChefsFollowing}
-                </ul>
-              </div>
-            )
-        }
-      </div>
+          <div className='col-6'>
+            <div className='float-end'>
+              {(currentUser && profile._id === currentUser._id) ?
+                <button className='btn btn-warning' onClick={logout}>Logout</button>
+                : (currentUser && profile.isChef) ? <button className='btn btn-primary'>Follow</button> : ''}
+            </div>
+          </div>
+        </div><div className='row mb-4'>
+            {profile.isChef ?
+              (
+                <div className='col-12'>
+                  <ul className='list-group'>
+                    <li className='list-group-item'>
+                      <h4 className='mb-0'>Recipes Created</h4>
+                    </li>
+                    <li className='list-group-item'>
+                      <div className='row mt-3'>
+                        {chefCreatedRecipes}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              )
+              : (
+                <div className='col-8'>
+                  <ul className='list-group'>
+                    <li className='list-group-item'>
+                      <h4 className='mb-0'>Liked Recipes</h4>
+                    </li>
+                    <li className='list-group-item'>
+                      <div className='row mt-3'>
+                        {consumerSavedRecipes}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            {profile.isChef ?
+              (
+                ''
+              )
+              : (
+                <div className='col-4'>
+                  <ul className="list-group">
+                    <li className="list-group-item">
+                      <h4 className='float-end mb-0'>Chefs Followed</h4>
+                    </li>
+                    {consumerChefsFollowing}
+                  </ul>
+                </div>
+              )}
+          </div></>
+        )
+        : (
+          <div className='row mt-4 mb-3'>
+            <div className='col-6 align-items-center d-inline-flex'>
+              <FontAwesomeIcon className='me-2' size='xl' icon={faUser}></FontAwesomeIcon>
+              <h3 className='mb-0'>User Not Found</h3>
+            </div>
+          </div>
+        )}
     </div>
   );
 
