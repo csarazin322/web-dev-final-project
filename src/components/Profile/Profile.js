@@ -11,8 +11,8 @@ import { findRecipeById } from '../../sercives/recipe/recipe-services';
 import Recipe from '../Recipe/Recipe';
 
 const Profile = () => {
-  const { username } = useParams()
   const { currentUser } = useSelector((state) => state.users)
+  const { username } = useParams()
   const [profile, setProfile] = useState(defaultUser)
   const [chefCreatedRecipes, setChefCreatedRecipes] = useState([])
   const [consumerSavedRecipes, setConsumerSavedRecipes] = useState([])
@@ -101,14 +101,13 @@ const Profile = () => {
                   <p className='mb-0'>{`${chef.createdRecipeIds.length} Recipes Created`}</p>
                 </div>
               </Link>
-              {followUnfollowButton(chef._id)}
+              {!currentUser.isChef ? followUnfollowButton(chef._id) : ''}
             </div>
           </li>
         )
       }))
     }
   }, [profile, currentUser])
-
 
   useEffect(() => {
     console.log('running use effect 1')
@@ -120,12 +119,13 @@ const Profile = () => {
         getChefsYouFollowById()
       }
     }
-  }, [profile, currentUser, getChefsYouFollowById, getLikedRecipesById, getChefsYouFollowById])
+  }, [profile, currentUser, getChefsYouFollowById, getLikedRecipesById, getRecipesCreatedById])
 
   useEffect(() => {
     console.log('running use effect 2')
     username ? getUserByUsername() : getProfile()
   }, [username])
+
 
   return (
     <div className={styles.Profile}>
@@ -139,7 +139,7 @@ const Profile = () => {
             <div className='float-end'>
               {(currentUser && profile._id === currentUser._id) ?
                 <button className='btn btn-warning' onClick={logout}>Logout</button>
-                : (currentUser && profile.isChef) ? followUnfollowButton(profile._id) : ''}
+                : (currentUser && !currentUser.isChef && profile.isChef) ? followUnfollowButton(profile._id) : ''}
             </div>
           </div>
         </div><div className='row mb-4'>

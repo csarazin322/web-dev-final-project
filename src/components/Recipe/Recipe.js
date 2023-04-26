@@ -40,7 +40,7 @@ const Recipe = ({ recipe = defaultRecipe }) => {
           <p className='card-text'>
             {recipe.description}
           </p>
-          {currentUser ?
+          {currentUser && !currentUser.isChef ?
             (currentUser.likedRecipesIds.find((recipeId) => recipe._id === recipeId) ?
               <FontAwesomeIcon onClick={unlikeRecipe} icon={faHeart} color={'red'} /> :
               <FontAwesomeIcon onClick={likeRecipe} icon={faHeart} />)
