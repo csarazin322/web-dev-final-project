@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from './Profile.module.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import defaultUser from '../../data/default-user';
 import { findUserById, findUserByUsername } from '../../sercives/user/user-services';
-import { logoutThunk, profileThunk } from '../../sercives/user/user-thunks';
+import { logoutThunk, profileThunk, updateUserThunk } from '../../sercives/user/user-thunks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faKitchenSet } from '@fortawesome/free-solid-svg-icons';
 import { findRecipeById } from '../../sercives/recipe/recipe-services';
@@ -20,12 +20,11 @@ const Profile = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-
   const getProfile = useCallback(async () => {
     console.log('getting profile')
     const action = await dispatch(profileThunk())
     action.payload ? setProfile(action.payload) : navigate('/profile/login')
-  }, [])
+  }, [dispatch, setProfile])
 
   const getUserByUsername = async () => {
     const user = await findUserByUsername(username)
@@ -37,20 +36,31 @@ const Profile = () => {
     navigate('/profile/login')
   }
 
+  const unfollow = async (chefId) => {
+    await dispatch(updateUserThunk({ ...currentUser, chefsFollowingIds: currentUser.chefsFollowingIds.filter((cid) => cid !== chefId) }))
+
+  }
+
+  const follow = async (chefId) => {
+    await dispatch(updateUserThunk({ ...currentUser, chefsFollowingIds: [...currentUser.chefsFollowingIds, chefId] }))
+  }
+
   const followUnfollowButton = (chefId) => {
-    return (profile ? (
-      profile.chefsFollowingIds.find((cid) => cid === chefId) ? (
-        <button className='btn btn-danger float-end' style={{ width: '30%' }}>Unfollow</button >
+
+    return (currentUser ? (
+      currentUser.chefsFollowingIds.find((cid) => cid === chefId) ? (
+        <button className='btn btn-danger' onClick={() => unfollow(chefId)}>Unfollow</button >
       )
         : (
-          <button className='btn btn-primary float-end' style={{ width: '30%' }}>Follow</button >
+          <button className='btn btn-primary' onClick={() => follow(chefId)}>Follow</button >
         )
     ) : '')
   }
 
   const getRecipesCreatedById = useCallback(async () => {
-    if (profile) {
-      const recipesFromDB = await Promise.all(profile.createdRecipeIds.map(async (rid) => await findRecipeById(rid)))
+    const profiletoget = (profile._id === currentUser._id) ? currentUser : profile
+    if (profiletoget) {
+      const recipesFromDB = await Promise.all(profiletoget.createdRecipeIds.map(async (rid) => await findRecipeById(rid)))
       setChefCreatedRecipes(recipesFromDB.map((recipe) => {
         return (
           <div className='col-4 mb-3' key={recipe._id}>
@@ -60,11 +70,12 @@ const Profile = () => {
       }
       ))
     }
-  }, [profile])
+  }, [profile, currentUser])
 
   const getLikedRecipesById = useCallback(async () => {
-    if (profile) {
-      const recipesFromDB = await Promise.all(profile.likedRecipesIds.map(async (rid) => await findRecipeById(rid)))
+    const profiletoget = (profile._id === currentUser._id) ? currentUser : profile
+    if (profiletoget) {
+      const recipesFromDB = await Promise.all(profiletoget.likedRecipesIds.map(async (rid) => await findRecipeById(rid)))
       setConsumerSavedRecipes(recipesFromDB.map((recipe) => {
         return (
           <div className='col-4 mb-3' key={recipe._id}>
@@ -74,11 +85,12 @@ const Profile = () => {
       }
       ))
     }
-  }, [profile])
+  }, [profile, currentUser])
 
   const getChefsYouFollowById = useCallback(async () => {
-    if (profile) {
-      const chefsFromDB = await Promise.all(profile.chefsFollowingIds.map(async (cid) => await findUserById(cid)))
+    const profiletoget = (profile._id === currentUser._id) ? currentUser : profile
+    if (profiletoget) {
+      const chefsFromDB = await Promise.all(profiletoget.chefsFollowingIds.map(async (cid) => await findUserById(cid)))
       setConsumerChefsFollowing(chefsFromDB.map((chef) => {
         return (
           <li className='list-group-item'>
@@ -95,10 +107,11 @@ const Profile = () => {
         )
       }))
     }
-  }, [profile])
+  }, [profile, currentUser])
 
 
   useEffect(() => {
+    console.log('running use effect 1')
     if (profile) {
       if (profile.isChef) {
         getRecipesCreatedById()
@@ -107,11 +120,12 @@ const Profile = () => {
         getChefsYouFollowById()
       }
     }
-  }, [currentUser, profile, getLikedRecipesById, getChefsYouFollowById, getRecipesCreatedById])
+  }, [profile, currentUser, getChefsYouFollowById, getLikedRecipesById, getChefsYouFollowById])
 
   useEffect(() => {
+    console.log('running use effect 2')
     username ? getUserByUsername() : getProfile()
-  }, [username, getProfile])
+  }, [username])
 
   return (
     <div className={styles.Profile}>
@@ -125,7 +139,7 @@ const Profile = () => {
             <div className='float-end'>
               {(currentUser && profile._id === currentUser._id) ?
                 <button className='btn btn-warning' onClick={logout}>Logout</button>
-                : (currentUser && profile.isChef) ? <button className='btn btn-primary'>Follow</button> : ''}
+                : (currentUser && profile.isChef) ? followUnfollowButton(profile._id) : ''}
             </div>
           </div>
         </div><div className='row mb-4'>

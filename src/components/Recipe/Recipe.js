@@ -12,11 +12,14 @@ const Recipe = ({ recipe = defaultRecipe }) => {
   const { currentUser } = useSelector((state) => state.users);
   const dispatch = useDispatch()
 
-
   const likeRecipe = async () => {
+    console.log('current user from like')
+    console.log(currentUser)
     const updatedLikes = [...currentUser.likedRecipesIds, recipe._id]
     const updatedUser = { ...currentUser, likedRecipesIds: updatedLikes };
-    await dispatch(updateUserThunk(updatedUser));
+    const action = await dispatch(updateUserThunk(updatedUser));
+    console.log('action payload from like')
+    console.log(action.payload)
   }
 
   const unlikeRecipe = async () => {

@@ -4,24 +4,30 @@ import { useState } from 'react';
 import defaultUser from '../../data/default-user';
 import { register } from '../../sercives/user/user-services';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { loginThunk } from '../../sercives/user/user-thunks';
 
 const Register = () => {
   const [newUser, setNewUser] = useState(defaultUser)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const registerNewUser = async () => {
-    const response = await register(newUser);
-    navigate('/profile')
+    await register(newUser);
+    const login = await dispatch(loginThunk(newUser))
+    login.payload ? navigate('/profile') : console.log('incomplete profile or users with the same email or username exist')
   }
 
-  const handleOnChange1 = (e) => {
-    console.log("at 1")
-    setNewUser({ ...newUser, isChef: false })
-  }
+  // const handleOnChange1 = (e) => {
+  //   console.log("at 1")
+  //   console.log(e)
+  //   setNewUser({ ...newUser, isChef: !e.target.checked })
+  // }
 
-  const handleOnChange2 = (e) => {
-    console.log("at 2")
-    setNewUser({ ...newUser, isChef: true })
-  }
+  // const handleOnChange2 = (e) => {
+  //   console.log("at 2")
+  //   console.log(e)
+  //   setNewUser({ ...newUser, isChef: e.target.checked })
+  // }
 
   return (
     < div className={styles.Register} >
@@ -58,24 +64,15 @@ const Register = () => {
           </div>
         </div>
         <div className='col-6'>
-          <p className='mb-1'>Consumer or Chef?</p>
-          <div className='row'>
-            <div className='col-6'>
-              <div className='form-check'>
-                <input
-                  value={newUser.isChef} onChange={handleOnChange1}
-                  className='form-check-input' type='radio' name='acct_type' id='consumer_acct_type' checked />
-                <label for='consumer_acct_type'>Consumer</label>
-              </div>
-            </div>
-            <div className='col-6 form-check'>
-              <div className='form-check'>
-                <input
-                  value={newUser.isChef} onChange={handleOnChange2}
-                  className='form-check-input' type='radio' name='acct_type' id='chef_acct_type' />
-                <label for='chef_acct_type'>Chef</label>
-              </div>
-            </div>
+          <div className='form-floating'>
+            <select className="form-select" id="acct_type" onChange={(e) => {
+              console.log(e.target.value)
+              setNewUser({ ...newUser, isChef: e.target.value })
+            }}>
+              <option selected value={false}>Consumer</option>
+              <option value={true}>Chef</option>
+            </select>
+            <label for='acct_type'>Consumer or Chef?</label>
           </div>
         </div>
       </div>

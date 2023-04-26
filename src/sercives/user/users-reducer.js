@@ -22,7 +22,7 @@ const userSlice = createSlice({
             state.currentUser = action.payload
         },
         [updateUserThunk.fulfilled]: (state, action) => {
-            state.currentUser = action.payload
+            state.currentUser = { ...action.payload }
         }
     }
 })
