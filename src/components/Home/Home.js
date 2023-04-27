@@ -2,8 +2,11 @@ import React from 'react';
 import Recipe from '../Recipe/Recipe';
 import styles from './Home.module.css';
 import defaultRecipe from '../../data/default-recipe';
+import ChefList from '../ChefList/ChefList';
+import { findRecipes } from '../../sercives/recipe/recipe-services';
 
-const listOfRecipes = ['wee'];
+console.log(findRecipes());
+const listOfRecipes = ['wee', 'woo', 'waa']; //findRecipes().slice(0, 20);
 
 const Home = () => (
   <div className={styles.Home}>
@@ -19,6 +22,7 @@ const Home = () => (
       </div>
       <div className='col-4 mt-3'>
         popular chefs ... have follow button appear when logged in
+          {<ChefList></ChefList>}
       </div>
     </div>
   </div>

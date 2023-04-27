@@ -7,7 +7,7 @@ const api = axios.create({
     // withCredentials: true,
 });
 
-export const findAllRecipes = async () => {
+export const findRecipes = async () => {
     const response = await api.get(RECIPES_REST_API_URL)
     return await response.data
 };
