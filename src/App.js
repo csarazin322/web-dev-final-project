@@ -25,6 +25,7 @@ function App() {
               <Route path='/*' element={<Home />} />
               <Route path='/feed' element={<Feed />} />
               <Route path='/search' element={<Search />} />
+              <Route path='/search/:term' element={<Search />} />
               <Route path='/profile' element={<Profile />} />
               <Route path='/profile/username/:username' element={<Profile />} />
               <Route path='/profile/register' element={<Register />} />
