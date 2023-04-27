@@ -19,3 +19,14 @@ export const imageSearch = async (query) => {
 
     return response.data
 }
+
+export const getDetailsById = async (imageId) => {
+
+    const queryParams = {
+        'language' : 'en'
+    }
+
+    const response = await imagesApi.getImage(imageId, queryParams)
+
+    return response.data
+}
