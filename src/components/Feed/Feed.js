@@ -24,8 +24,6 @@ const Feed = () => {
       :
       setListOfRecipes(lor)
   }
-  //.slice(0,20)
-  //: findRecipes().slice(0, 20);
 
   useEffect(() => {
     console.log('using effect')
