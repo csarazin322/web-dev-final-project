@@ -155,7 +155,7 @@ const MakeRecipe = (imageUrl = '') => {
         <div className='col-12'>
           <div className='form-floating'>
             <input
-              value={newUser.firstName} onChange={(e) => setNewRecipe({ ...newRecipe, title: e.target.value })}
+              value={newRecipe.title} onChange={(e) => setNewRecipe({ ...newRecipe, title: e.target.value })}
               id='recipe_title' type="text" className="form-control" placeholder="Recipe Title" aria-label="Recipe Title" />
             <label for='recipe_title'>Title</label>
           </div>
@@ -171,7 +171,7 @@ const MakeRecipe = (imageUrl = '') => {
         <div className='col-6'>
           <div className='form-floating'>
             <input
-              value={newUser.email} onChange={(e) => setNewRecipe({ ...newRecipe, description: e.target.value })}
+              value={newRecipe.description} onChange={(e) => setNewRecipe({ ...newRecipe, description: e.target.value })}
               id='description' type="text" className="form-control" placeholder="About the recipe" aria-label="Description" />
             <label for='description'>Description</label>
           </div>
