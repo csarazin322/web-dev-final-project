@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import styles from './Register.module.css';
+import styles from './MakeRecipe.module.css';
 import defaultRecipe from '../../data/default-recipe';
 import { createRecipe } from '../../sercives/recipe/recipe-services';
 import { useNavigate } from 'react-router';
-import { current } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 
 
@@ -42,7 +41,7 @@ const Ingredients = ([newRecipe, setNewRecipe]) => {
   }
 
   return (
-    <div className="App">
+    <div className="row">
       <form onSubmit={submit}>
         {formFields.map((form, index) => {
           return (
@@ -104,7 +103,7 @@ const Steps = ([newRecipe, setNewRecipe]) => {
   }
 
   return (
-    <div className="App">
+    <div className="row">
       <form onSubmit={submit}>
         {formFields.map((form, index) => {
           return (
@@ -128,7 +127,7 @@ const Steps = ([newRecipe, setNewRecipe]) => {
 }
 
 
-const MakeRecipe = (imageId = '') => {
+const MakeRecipe = (imageUrl = '') => {
   const [newRecipe, setNewRecipe] = useState(defaultRecipe);
 
   const { currentUser } = useSelector((state) => state.users);
@@ -138,27 +137,18 @@ const MakeRecipe = (imageId = '') => {
     : setNewRecipe({ ...newRecipe, ownerId: 'unknown' }))
     : setNewRecipe({ ...newRecipe, ownerId: 'unknown' });
 
-  setNewRecipe({ ...newRecipe, image: imageId })
+  setNewRecipe({ ...newRecipe, image: imageUrl })
 
   const navigate = useNavigate()
+
   const createNewRecipe = async () => {
     const response = await createRecipe(newRecipe);
     navigate('/profile')
   }
 
-  const handleOnChange1 = (e) => {
-    console.log("at 1")
-    setNewRecipe({ ...newUser, isChef: false })
-  }
-
-  const handleOnChange2 = (e) => {
-    console.log("at 2")
-    setNewUser({ ...newUser, isChef: true })
-  }
-
   return (
-    < div className={styles.Register} >
-      <h4 className='mt-4 mb-3'>Register New User</h4>
+    < div className={styles.MakeRecipe} >
+      <h4 className='mt-4 mb-3'>Create New Recipe</h4>
 
       {/* Recipe title row */}
       <div className='row mb-2'>
@@ -170,6 +160,10 @@ const MakeRecipe = (imageId = '') => {
             <label for='recipe_title'>Title</label>
           </div>
         </div>
+      </div>
+
+      <div className='row mb-2'>
+        <img className='card-img' src={imageUrl}></img>
       </div>
 
       {/* description row */}
@@ -184,7 +178,7 @@ const MakeRecipe = (imageId = '') => {
         </div>
       </div>
 
-      {/* username and password row */}
+      {/* ingredients and steps dynamic lists */}
       <div className='row mb-2'>
         <Ingredients></Ingredients>
       </div>
