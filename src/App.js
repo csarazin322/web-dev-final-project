@@ -9,6 +9,7 @@ import NavBar from './components/NavBar/NavBar';
 import Header from './components/Header/Header';
 import Search from './components/Search/Search'
 import Feed from './components/Feed/Feed';
+import MakeRecipe from './components/MakeRecipe/MakeRecipe'
 import CurrentUserContext from './redux/currentUserContext';
 import Register from './components/Register/Register';
 import Login from './components/Login/Login';
@@ -23,6 +24,7 @@ function App() {
             <NavBar />
             <Routes>
               <Route path='/*' element={<Home />} />
+              <Route path='/mr' element={<MakeRecipe />} />
               <Route path='/feed' element={<Feed />} />
               <Route path='/search' element={<Search />} />
               <Route path='/search/:term' element={<Search />} />

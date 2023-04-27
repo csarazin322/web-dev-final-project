@@ -14,6 +14,8 @@ export const findAllUsers = async () => {
 
 export const findAllChefs = async () => {
     const response = await api.get(`${USERS_REST_API_URL}/chefs`)
+    console.log('these are the responses for chefs')
+    console.log(response)
     return response.data
 };
 

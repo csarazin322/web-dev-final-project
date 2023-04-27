@@ -94,14 +94,20 @@ const Profile = () => {
       setConsumerChefsFollowing(chefsFromDB.map((chef) => {
         return (
           <li className='list-group-item'>
-            <div className='d-flex justify-content-between'>
-              <Link style={{ textDecoration: 'none' }} className='' to={`/profile/username/${chef.username}`}>
-                <div>
-                  <h6>{chef.username}</h6>
+
+            <div className='row'>
+              <div className='col-8'>
+                <Link style={{ textDecoration: 'none' }} className='' to={`/profile/username/${chef.username}`}>
+                  <h6 className='w-100' style={{ wordBreak: 'break-word' }}>{chef.username}</h6>
                   <p className='mb-0'>{`${chef.createdRecipeIds.length} Recipes Created`}</p>
+
+                </Link>
+              </div>
+              <div className='col-4'>
+                <div className='float-end'>
+                  {!currentUser.isChef ? followUnfollowButton(chef._id) : ''}
                 </div>
-              </Link>
-              {!currentUser.isChef ? followUnfollowButton(chef._id) : ''}
+              </div>
             </div>
           </li>
         )
@@ -133,7 +139,7 @@ const Profile = () => {
         (<><div className='row mt-4 mb-3'>
           <div className='col-6 align-items-center d-inline-flex'>
             <FontAwesomeIcon className='me-2' size='xl' icon={profile.isChef ? faKitchenSet : faUser}></FontAwesomeIcon>
-            <h3 className='mb-0'>{profile.username}</h3>
+            <h3 className='mb-0' style={{ wordBreak: 'break-word' }}>{profile.username}</h3>
           </div>
           <div className='col-6'>
             <div className='float-end'>
