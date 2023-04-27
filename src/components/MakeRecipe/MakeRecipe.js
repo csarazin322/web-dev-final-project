@@ -180,10 +180,10 @@ const MakeRecipe = (imageUrl = '') => {
 
       {/* ingredients and steps dynamic lists */}
       <div className='row mb-2'>
-        <Ingredients></Ingredients>
+        <Ingredients newRecipe={newRecipe} setNewRecipe={setNewRecipe}></Ingredients>
       </div>
       <div className='row mb-2'>
-        <Steps></Steps>
+        <Steps newRecipe={newRecipe} setNewRecipe={setNewRecipe}></Steps>
       </div>
 
       <div className='row mb-2'>
