@@ -31,7 +31,7 @@ const ImageDetails = (imageId = '') => {
         <p>Image Type: {sstkResponse.image_type}</p> 
       </div>
       <div className='row mb-2'>
-        <Link to={`/mr/imageUrl/${imageUrl}`}>
+        <Link to={`/mr/imageUrl/${sstkResponse.preview_1000.url}`}>
           <button className='btn btn-success float-end'>Select this image</button>
         </Link>
       </div>
