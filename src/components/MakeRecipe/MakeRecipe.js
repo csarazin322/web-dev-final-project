@@ -16,7 +16,7 @@ const MakeRecipe = ({ imageUrl = 'recipe.png' }) => {
 
   const createNewRecipe = async () => {
     const response = await createRecipe({ ...newRecipe, ownerId: currentUser._id });
-    // navigate('/profile')
+    navigate('/profile')
   }
 
   const addIngredient = () => setNewRecipe({

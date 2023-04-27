@@ -1,12 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ImageDetails.module.css';
+import MakeRecipe from '../MakeRecipe/MakeRecipe';
 
-const ImageDetails = () => (
-  <div className={styles.ImageDetails}>
-    ImageDetails Component
-  </div>
-);
+
+
+const ImageDetails = (imageUrl = '') => {
+
+  return (
+    <div className={styles.ImageDetails}>
+    
+
+      
+      <Link to={`/mr/imageUrl/${imageUrl}`}>
+        <button className='btn btn-success float-end'>Select this image</button>
+      </Link>
+    </div>
+  );
+}
 
 ImageDetails.propTypes = {};
 
