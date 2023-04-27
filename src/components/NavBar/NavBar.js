@@ -20,7 +20,7 @@ const NavBar = () => {
         <Link className={`nav-link ${path.startsWith('/feed') ? 'active text-success ' : ''}`} to='/feed'>
           Feed
         </Link>
-        <Link className={`nav-link ${path.startsWith('/search') ? 'active text-success ' : ''}`} to='/search'>
+        <Link className={`nav-link ${path.startsWith('/search') || path.startsWith('/details') ? 'active text-success ' : ''}`} to='/search'>
           Search
         </Link>
         <Link className={`nav-link ${path.startsWith('/profile') ? 'active text-success ' : ''}`} to={currentUser ? '/profile' : 'profile/login'}>

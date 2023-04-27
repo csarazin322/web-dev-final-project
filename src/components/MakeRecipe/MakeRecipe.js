@@ -1,43 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './MakeRecipe.module.css';
 import defaultRecipe from '../../data/default-recipe';
 import { createRecipe } from '../../sercives/recipe/recipe-services';
-import { useNavigate } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from '@reduxjs/toolkit';
+import { updateUser } from '../../sercives/user/user-services';
+import { imageSearchById } from '../../sercives/shutterstock/shutterstock-services';
 
 
-const MakeRecipe = ({ imageUrl = 'recipe.png' }) => {
+const MakeRecipe = () => {
+  const { imageId } = useParams();
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const [searchId, setSearchId] = useState(imageId)
+  const [results, setResults] = useState(null)
   const [newRecipe, setNewRecipe] = useState(defaultRecipe);
   const { currentUser } = useSelector((state) => state.users);
-  const navigate = useNavigate()
+
+  const getPassedImage = async () => {
+    if (searchId) {
+      const response = await imageSearchById(searchId).then((data) => {
+        setResults(data)
+      })
+    }
+  }
+
+  useEffect(() => {
+    getPassedImage()
+  }, [searchId])
 
   const createNewRecipe = async () => {
-    const response = await createRecipe({ ...newRecipe, ownerId: currentUser._id });
-    navigate('/profile')
+    const response = await createRecipe({ ...newRecipe, ownerId: currentUser._id, image: (results) ? results.assets.preview_1000.url : '' }).then((resp) => dispatch(updateUser({ ...currentUser, createdRecipeIds: [...currentUser.createdRecipeIds, resp._id] })));
+    // navigate('/profile')
   }
 
   const addIngredient = () => setNewRecipe({
     ...newRecipe,
     ingredients: [...newRecipe.ingredients, {
-      id: nanoid(),
+      uiid: nanoid(),
       ingredient: '',
       amount: 0,
       measurement: ''
     }]
   })
 
-  const deleteIngredient = (id) => setNewRecipe({
+  const deleteIngredient = (uiid) => setNewRecipe({
     ...newRecipe,
-    ingredients: newRecipe.ingredients.filter((ing) => ing.id !== id)
+    ingredients: newRecipe.ingredients.filter((ing) => ing.uiid !== uiid)
   })
 
-  const changeIngredient = (id, name, value) => {
+  const changeIngredient = (uiid, name, value) => {
     const updatedRecipe = {
       ...newRecipe, ingredients: newRecipe.ingredients.map((ingredient) => {
-        if (ingredient.id === id) {
+        if (ingredient.uiid === uiid) {
           ingredient[name] = value
         }
         return ingredient
@@ -50,20 +68,20 @@ const MakeRecipe = ({ imageUrl = 'recipe.png' }) => {
   const addStep = () => setNewRecipe({
     ...newRecipe,
     steps: [...newRecipe.steps, {
-      id: nanoid(),
+      uiid: nanoid(),
       step: ''
     }]
   })
 
-  const deleteStep = (id) => setNewRecipe({
+  const deleteStep = (uiid) => setNewRecipe({
     ...newRecipe,
-    steps: newRecipe.steps.filter((step) => step.id !== id)
+    steps: newRecipe.steps.filter((step) => step.uiid !== uiid)
   })
 
-  const changeStep = (id, value) => {
+  const changeStep = (uiid, value) => {
     const updatedRecipe = {
       ...newRecipe, steps: newRecipe.steps.map((step) => {
-        if (step.id === id) {
+        if (step.uiid === uiid) {
           step.step = value
         }
         return step
@@ -93,7 +111,7 @@ const MakeRecipe = ({ imageUrl = 'recipe.png' }) => {
         <div className='row mb-2'>
           <div className='col-12'>
             <div className='card'>
-              <img className='card-img' src={imageUrl} alt='loading'></img>
+              <img className='card-img' src={results ? results.assets.results.assets.preview_1000.url : ''} alt='loading'></img>
             </div>
           </div>
         </div>
@@ -120,26 +138,26 @@ const MakeRecipe = ({ imageUrl = 'recipe.png' }) => {
                   <div className='col-5'>
                     <div className='form'>
                       <input
-                        value={ingredient.ingredient} onChange={(e) => changeIngredient(ingredient.id, 'ingredient', e.target.value)}
-                        id={`${ingredient.id}_ingredient`} type="text" className="form-control" placeholder="Ingredient" aria-label="Ingredient" />
+                        value={ingredient.ingredient} onChange={(e) => changeIngredient(ingredient.uiid, 'ingredient', e.target.value)}
+                        id={`${ingredient.uiid}_ingredient`} type="text" className="form-control" placeholder="Ingredient" aria-label="Ingredient" />
                     </div>
                   </div>
                   <div className='col-3'>
                     <div className='form'>
                       <input
-                        value={ingredient.amount} onChange={(e) => changeIngredient(ingredient.id, 'amount', e.target.value)}
-                        id={`${ingredient.id}_amount`} type="number" className="form-control" placeholder="Amount" aria-label="Amount" />
+                        value={ingredient.amount} onChange={(e) => changeIngredient(ingredient.uiid, 'amount', e.target.value)}
+                        id={`${ingredient.uiid}_amount`} type="number" className="form-control" placeholder="Amount" aria-label="Amount" />
                     </div>
                   </div>
                   <div className='col-3'>
                     <div className='form'>
                       <input
-                        value={ingredient.measurement} onChange={(e) => changeIngredient(ingredient.id, 'measurement', e.target.value)}
-                        id={`${ingredient.id}_measurement`} type="text" className="form-control" placeholder="Measurement" aria-label="Measurement" />
+                        value={ingredient.measurement} onChange={(e) => changeIngredient(ingredient.uiid, 'measurement', e.target.value)}
+                        id={`${ingredient.uiid}_measurement`} type="text" className="form-control" placeholder="Measurement" aria-label="Measurement" />
                     </div>
                   </div>
                   <div className='col-1'>
-                    <button className='btn btn-danger' onClick={() => deleteIngredient(ingredient.id)}>
+                    <button className='btn btn-danger' onClick={() => deleteIngredient(ingredient.uiid)}>
                       <FontAwesomeIcon icon={faMinus}></FontAwesomeIcon>
                     </button>
                   </div>
@@ -166,8 +184,8 @@ const MakeRecipe = ({ imageUrl = 'recipe.png' }) => {
                   <div className='col-11'>
                     <div className='form'>
                       <textarea
-                        value={step.step} onChange={(e) => changeStep(step.id, e.target.value)}
-                        id={`${step.id}_step`} type="text" className="form-control" placeholder="Step" aria-label="Step" />
+                        value={step.step} onChange={(e) => changeStep(step.uiid, e.target.value)}
+                        id={`${step.uiid}_step`} type="text" className="form-control" placeholder="Step" aria-label="Step" />
                     </div>
                   </div>
                   <div className='col-1'>

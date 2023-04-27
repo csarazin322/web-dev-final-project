@@ -1,5 +1,5 @@
 const defaultRecipe = {
-    _id: 'thing',
+    _id: null,
     title: '',
     image: '',
     ownerId: '',

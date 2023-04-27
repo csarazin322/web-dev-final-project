@@ -19,3 +19,12 @@ export const imageSearch = async (query) => {
 
     return response.data
 }
+
+export const imageSearchById = async (id) => {
+
+    const response = await imagesApi.getImage(id)
+
+    console.log(response)
+
+    return response
+}
