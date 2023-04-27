@@ -168,7 +168,7 @@ const MakeRecipe = (imageUrl = '') => {
 
       {/* description row */}
       <div className='row mb-2'>
-        <div className='col-6'>
+        <div className='col-12'>
           <div className='form-floating'>
             <input
               value={newRecipe.description} onChange={(e) => setNewRecipe({ ...newRecipe, description: e.target.value })}
