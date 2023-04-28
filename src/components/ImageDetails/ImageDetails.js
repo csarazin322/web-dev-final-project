@@ -29,6 +29,7 @@ const ImageDetails = (imageId = '') => {
       <div className='row mb-2'>
         <h6>{sstkResponse.description}</h6>
         <p>Image Type: {sstkResponse.image_type}</p> 
+        <p>Size: {sstkResponse.preview_1000.width}x{sstkResponse.preview_1000.height}</p>
       </div>
       <div className='row mb-2'>
         <Link to={`/mr/imageUrl/${sstkResponse.preview_1000.url}`}>

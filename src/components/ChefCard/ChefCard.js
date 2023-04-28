@@ -38,7 +38,7 @@ const ChefCard = ({ user = defaultUser }) => {
                             </Link>
                         </div>
                         <div className='col-4'>
-                            {currentUser ?
+                            {currentUser && currentUser.isChef === false ?
                                 (currentUser.chefsFollowingIds.find((chefId) => user._id === chefId) ?
                                     <button onClick={unfollowChef} className={'btn btn-danger float-end'}> Unfollow </button> :
                                     <button onClick={followChef} className={'btn btn-primary float-end'}> Follow </button>)
