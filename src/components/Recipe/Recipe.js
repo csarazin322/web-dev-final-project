@@ -13,13 +13,9 @@ const Recipe = ({ recipe = defaultRecipe }) => {
   const dispatch = useDispatch()
 
   const likeRecipe = async () => {
-    console.log('current user from like')
-    console.log(currentUser)
     const updatedLikes = [...currentUser.likedRecipesIds, recipe._id]
     const updatedUser = { ...currentUser, likedRecipesIds: updatedLikes };
-    const action = await dispatch(updateUserThunk(updatedUser));
-    console.log('action payload from like')
-    console.log(action.payload)
+    await dispatch(updateUserThunk(updatedUser));
   }
 
   const unlikeRecipe = async () => {
@@ -32,7 +28,7 @@ const Recipe = ({ recipe = defaultRecipe }) => {
   return (
     <div className={styles.Recipe}>
       <div className='card'>
-        <img className='card-img-top' src={recipeImg} alt={recipeImg} />
+        <img className='card-img-top' src={recipe.image} alt={recipeImg} />
         <div className='card-body'>
           <h5 className='card-title'>
             {recipe.title}

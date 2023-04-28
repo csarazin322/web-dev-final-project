@@ -25,7 +25,7 @@ function App() {
             <NavBar />
             <Routes>
               <Route path='/*' element={<Home />} />
-              <Route path='/mr/:imageUrl' element={<MakeRecipe />} />
+              <Route path='/mr/:imageId' element={<MakeRecipe />} />
               <Route path='/feed' element={<Feed />} />
               <Route path='/search' element={<Search />} />
               <Route path='/search/:term' element={<Search />} />
