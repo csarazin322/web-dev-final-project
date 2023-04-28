@@ -59,16 +59,18 @@ const ImageDetails = () => {
 
 
       <Link to={`/mr/${imageId}`}>
-        <button className='btn btn-primary float-end'>Create Recipe!</button>
+        <button className='btn btn-primary float-end row'>Create Recipe!</button>
       </Link>
 
 
-      <h5>Recipes made with this image:</h5>
+      <h5 className='row col-12'>Recipes made with this image:</h5>
       {listOfRecipes.map((recipe) => {
         //Replace with whatever the correct path is for the recipe page for a given recipe id
         <Link to={`/recipe/${recipe._id}`}>
-          <h6>{recipe.title}</h6>
-          <p>{recipe.description}</p>
+          <div className='row mb-2'>
+            <h6>{recipe.title}</h6>
+            <p>{recipe.description}</p>
+          </div>
         </Link>
       })}
     </div>
