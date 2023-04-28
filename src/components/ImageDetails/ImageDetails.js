@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ImageDetails.module.css';
 import MakeRecipe from '../MakeRecipe/MakeRecipe';
+import { findRecipes } from '../../sercives/recipe/recipe-services';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { imageSearchById } from '../../sercives/shutterstock/shutterstock-services';
 
@@ -12,6 +13,7 @@ const ImageDetails = () => {
   const navigate = useNavigate();
   const [searchId, setSearchId] = useState(imageId)
   const [results, setResults] = useState(null)
+  const [listOfRecipes, setListOfRecipes] = useState([])
 
   const getPassedImage = async () => {
     if (searchId) {
@@ -24,8 +26,16 @@ const ImageDetails = () => {
     }
   }
 
+
+  const getListOfRecipes = async () => {
+    const recipes = await findRecipes();
+    recipes.filter((recipe) => recipe.image === results.assets.preview_1000.url)
+    setListOfRecipes(recipes)
+  }
+
   useEffect(() => {
     getPassedImage()
+    getListOfRecipes()
   }, [searchId])
 
   return (
@@ -51,6 +61,16 @@ const ImageDetails = () => {
       <Link to={`/mr/${imageId}`}>
         <button className='btn btn-primary float-end'>Create Recipe!</button>
       </Link>
+
+
+      <h5>Recipes made with this image:</h5>
+      {listOfRecipes.map((recipe) => {
+        //Replace with whatever the correct path is for the recipe page for a given recipe id
+        <Link to={`/recipe/${recipe._id}`}>
+          <h6>{recipe.title}</h6>
+          <p>{recipe.description}</p>
+        </Link>
+      })}
     </div>
   );
 }
