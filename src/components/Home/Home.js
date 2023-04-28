@@ -11,7 +11,7 @@ const Home = () => {
 
   const getListOfRecipes = async () => {
     const lor = await findRecipes()
-    setListOfRecipes(lor)
+    setListOfRecipes(lor.reverse())
   }
 
   useEffect(() => {
@@ -23,6 +23,7 @@ const Home = () => {
     <div className={styles.Home}>
       <div className='row justify-content-start'>
         <div className='col-8 mt-3'>
+          <h4>Recent Posts</h4>
           {listOfRecipes.map((recipe) => {
             return (
               <div className='row mb-3'>
@@ -32,6 +33,7 @@ const Home = () => {
           })}
         </div>
         <div className='col-4 mt-3'>
+          <h4 className=''>Popular Chefs</h4>
           {<ChefList></ChefList>}
         </div>
       </div>

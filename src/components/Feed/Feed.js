@@ -22,7 +22,7 @@ const Feed = () => {
         })
       )
       :
-      setListOfRecipes(lor)
+      setListOfRecipes(lor.reverse())
   }
 
   useEffect(() => {

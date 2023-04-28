@@ -28,7 +28,7 @@ const ChefCard = ({ user = defaultUser }) => {
             <div className='card'>
                 <div className='card-body'>
                     <div className='row'>
-                        <div className='col-8'>
+                        <div className='col-md-8 col-sm-12'>
                             <Link to={`/profile/username/${user.username}`} style={{ textDecoration: 'none' }}>
                                 <h5 className='card-title'>
                                     {user.firstName + ' ' + user.lastName}
@@ -37,8 +37,8 @@ const ChefCard = ({ user = defaultUser }) => {
 
                             </Link>
                         </div>
-                        <div className='col-4'>
-                            {currentUser ?
+                        <div className='col-md-4 col-sm-12'>
+                            {currentUser && !currentUser.isChef ?
                                 (currentUser.chefsFollowingIds.find((chefId) => user._id === chefId) ?
                                     <button onClick={unfollowChef} className={'btn btn-danger float-end'}> Unfollow </button> :
                                     <button onClick={followChef} className={'btn btn-primary float-end'}> Follow </button>)

@@ -23,6 +23,7 @@ const Profile = () => {
 
   const saveProfileChanges = async () => {
     await dispatch(updateUserThunk({ ...currentUser, firstName: changedUser.firstName, lastName: changedUser.lastName, email: changedUser.email, password: changedUser.password }))
+    getProfile()
   }
 
   const getProfile = useCallback(async () => {
@@ -66,7 +67,7 @@ const Profile = () => {
     const profiletoget = (profile._id === currentUser._id) ? currentUser : profile
     if (profiletoget) {
       const recipesFromDB = await Promise.all(profiletoget.createdRecipeIds.map(async (rid) => await findRecipeById(rid)))
-      setChefCreatedRecipes(recipesFromDB.map((recipe) => {
+      setChefCreatedRecipes(recipesFromDB.reverse().map((recipe) => {
         return (
           <div className='col-4 mb-3' key={recipe._id}>
             <Recipe recipe={recipe} />
@@ -81,7 +82,7 @@ const Profile = () => {
     const profiletoget = (profile._id === currentUser._id) ? currentUser : profile
     if (profiletoget) {
       const recipesFromDB = await Promise.all(profiletoget.likedRecipesIds.map(async (rid) => await findRecipeById(rid)))
-      setConsumerSavedRecipes(recipesFromDB.map((recipe) => {
+      setConsumerSavedRecipes(recipesFromDB.reverse().map((recipe) => {
         return (
           <div className='col-4 mb-3' key={recipe._id}>
             <Recipe recipe={recipe} />
@@ -144,7 +145,8 @@ const Profile = () => {
         (<><div className='row mt-4 mb-3'>
           <div className='col-6 align-items-center d-inline-flex'>
             <FontAwesomeIcon className='me-2' size='xl' icon={profile.isChef ? faKitchenSet : faUser}></FontAwesomeIcon>
-            <h3 className='mb-0' style={{ wordBreak: 'break-word' }}>{profile.username}</h3>
+            <h3 className='mb-0 me-2' style={{ wordBreak: 'break-word' }}>{`${profile.username} | ${profile.firstName} ${profile.lastName}`}</h3>
+
           </div>
           <div className='col-6'>
             <div className='float-end'>

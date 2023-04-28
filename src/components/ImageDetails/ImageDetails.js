@@ -4,12 +4,14 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { imageSearchById } from '../../sercives/shutterstock/shutterstock-services';
 import { findRecipes } from '../../sercives/recipe/recipe-services';
 import Recipe from '../Recipe/Recipe';
+import { useSelector } from 'react-redux';
 
 
 
 const ImageDetails = () => {
   const { imageId } = useParams();
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.users)
   const [searchId, setSearchId] = useState(imageId)
   const [results, setResults] = useState(null)
   const [listOfRecipes, setListOfRecipes] = useState([])
@@ -62,18 +64,23 @@ const ImageDetails = () => {
       </div>
 
 
-      <Link to={`/mr/${imageId}`}>
-        <button className='btn btn-primary float-end'>Create Recipe!</button>
-      </Link>
+      {
+        currentUser && currentUser.isChef ? (
+          <Link to={`/mr/${imageId}`}>
+            <button className='btn btn-primary float-end'>Create Recipe!</button>
+          </Link>
+        ) : ''
+      }
 
-      <div className='row'>
+
+      <div className='row mb-3'>
         <h5 className='col-12'>Recipes made with this image:</h5>
-        {listOfRecipes ?
+        {listOfRecipes && listOfRecipes.length > 0 ?
           listOfRecipes.map((recipe) => (
             <div className='col-4'>
               <Recipe recipe={recipe}></Recipe>
             </div>
-          )) : ''}
+          )) : <p>No recipes created yet with this image</p>}
 
       </div>
     </div>

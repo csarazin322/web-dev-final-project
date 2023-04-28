@@ -48,7 +48,7 @@ const RecipeView = () => {
                             return (
                               <li className='list-group-item'>
                                 <p className='mb-0'>
-                                  {`- ${amount} ${measurement} of ${ingredient}`}
+                                  {`- ${amount} ${(measurement !== '') ? measurement + ' of' : ''} ${ingredient}`}
                                 </p>
                               </li>
                             )

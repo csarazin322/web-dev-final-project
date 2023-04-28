@@ -34,12 +34,17 @@ const MakeRecipe = () => {
   }, [searchId])
 
   const createNewRecipe = async () => {
+    let newId = ''
     const response = await createRecipe({
       ...newRecipe, ownerId: currentUser._id,
       image: (results) ? results.assets.preview_1000.url : '/recipe.png'
-    })
-      .then((resp) => dispatch(updateUser({ ...currentUser, createdRecipeIds: [...currentUser.createdRecipeIds, resp._id] })));
-    // navigate('/profile')
+    }).then(async (resp) => {
+      console.log(resp)
+      await dispatch(updateUser({ ...currentUser, createdRecipeIds: [...currentUser.createdRecipeIds, resp._id] }))
+    }).catch(err => err);
+    console.log('other response')
+    console.log(response)
+    navigate(`/profile`)
   }
 
   const addIngredient = () => setNewRecipe({
@@ -212,7 +217,6 @@ const MakeRecipe = () => {
           </div>
 
         </div>
-
         <div className='row mb-2'>
           <div className='col-12'>
             <button className='btn btn-success float-end' onClick={createNewRecipe}>Create</button>
