@@ -21,6 +21,7 @@ const MakeRecipe = () => {
   const { currentUser } = useSelector((state) => state.users);
 
   const getPassedImage = async () => {
+    console.log(searchId)
     if (searchId) {
       const response = await imageSearchById(searchId).then((data) => {
         setResults(data)
@@ -33,7 +34,11 @@ const MakeRecipe = () => {
   }, [searchId])
 
   const createNewRecipe = async () => {
-    const response = await createRecipe({ ...newRecipe, ownerId: currentUser._id, image: (results) ? results.assets.preview_1000.url : '' }).then((resp) => dispatch(updateUser({ ...currentUser, createdRecipeIds: [...currentUser.createdRecipeIds, resp._id] })));
+    const response = await createRecipe({
+      ...newRecipe, ownerId: currentUser._id,
+      image: (results) ? results.assets.preview_1000.url : '/recipe.png'
+    })
+      .then((resp) => dispatch(updateUser({ ...currentUser, createdRecipeIds: [...currentUser.createdRecipeIds, resp._id] })));
     // navigate('/profile')
   }
 
@@ -111,7 +116,7 @@ const MakeRecipe = () => {
         <div className='row mb-2'>
           <div className='col-12'>
             <div className='card'>
-              <img className='card-img' src={results ? results.assets.results.assets.preview_1000.url : ''} alt='loading'></img>
+              <img className='card-img' src={results ? results.assets.preview_1000.url : ''} alt='loading'></img>
             </div>
           </div>
         </div>
