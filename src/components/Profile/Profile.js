@@ -64,7 +64,7 @@ const Profile = () => {
   }
 
   const getRecipesCreatedById = useCallback(async () => {
-    const profiletoget = (profile._id === currentUser._id) ? currentUser : profile
+    const profiletoget = (currentUser && profile._id === currentUser._id) ? currentUser : profile
     if (profiletoget) {
       const recipesFromDB = await Promise.all(profiletoget.createdRecipeIds.map(async (rid) => await findRecipeById(rid)))
       setChefCreatedRecipes(recipesFromDB.reverse().map((recipe) => {
@@ -79,7 +79,7 @@ const Profile = () => {
   }, [profile, currentUser])
 
   const getLikedRecipesById = useCallback(async () => {
-    const profiletoget = (profile._id === currentUser._id) ? currentUser : profile
+    const profiletoget = (currentUser && profile._id === currentUser._id) ? currentUser : profile
     if (profiletoget) {
       const recipesFromDB = await Promise.all(profiletoget.likedRecipesIds.map(async (rid) => await findRecipeById(rid)))
       setConsumerSavedRecipes(recipesFromDB.reverse().map((recipe) => {
@@ -94,7 +94,7 @@ const Profile = () => {
   }, [profile, currentUser])
 
   const getChefsYouFollowById = useCallback(async () => {
-    const profiletoget = (profile._id === currentUser._id) ? currentUser : profile
+    const profiletoget = (currentUser && profile._id === currentUser._id) ? currentUser : profile
     if (profiletoget) {
       const chefsFromDB = await Promise.all(profiletoget.chefsFollowingIds.map(async (cid) => await findUserById(cid)))
       setConsumerChefsFollowing(chefsFromDB.map((chef) => {
