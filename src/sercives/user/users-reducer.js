@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginThunk, profileThunk, registerThunk, logoutThunk } from "./user-thunks";
+import { loginThunk, profileThunk, registerThunk, logoutThunk, updateUserThunk } from "./user-thunks";
 const initialState = {
     currentUser: null
 }
@@ -20,6 +20,9 @@ const userSlice = createSlice({
         },
         [profileThunk.fulfilled]: (state, action) => {
             state.currentUser = action.payload
+        },
+        [updateUserThunk.fulfilled]: (state, action) => {
+            state.currentUser = { ...action.payload }
         }
     }
 })
