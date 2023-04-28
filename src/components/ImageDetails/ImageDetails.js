@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import styles from './ImageDetails.module.css';
-import MakeRecipe from '../MakeRecipe/MakeRecipe';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { imageSearchById } from '../../sercives/shutterstock/shutterstock-services';
+import { findRecipes } from '../../sercives/recipe/recipe-services';
+import Recipe from '../Recipe/Recipe';
 
 
 
@@ -12,6 +12,7 @@ const ImageDetails = () => {
   const navigate = useNavigate();
   const [searchId, setSearchId] = useState(imageId)
   const [results, setResults] = useState(null)
+  const [listOfRecipes, setListOfRecipes] = useState([])
 
   const getPassedImage = async () => {
     if (searchId) {
@@ -24,9 +25,22 @@ const ImageDetails = () => {
     }
   }
 
+  const getListOfRecipes = async () => {
+    const recipes = await findRecipes();
+    setListOfRecipes(
+      recipes.filter((recipe) => recipe.image === results.assets.preview_1000.url)
+    )
+    console.log('here are my list of recipes')
+    console.log(listOfRecipes)
+  }
+
   useEffect(() => {
     getPassedImage()
   }, [searchId])
+
+  useEffect(() => {
+    getListOfRecipes()
+  }, [results])
 
   return (
     <div className={styles.ImageDetails}>
@@ -51,6 +65,17 @@ const ImageDetails = () => {
       <Link to={`/mr/${imageId}`}>
         <button className='btn btn-primary float-end'>Create Recipe!</button>
       </Link>
+
+      <div className='row'>
+        <h5 className='col-12'>Recipes made with this image:</h5>
+        {listOfRecipes ?
+          listOfRecipes.map((recipe) => (
+            <div className='col-4'>
+              <Recipe recipe={recipe}></Recipe>
+            </div>
+          )) : ''}
+
+      </div>
     </div>
   );
 }

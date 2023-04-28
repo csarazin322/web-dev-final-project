@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { updateUserThunk } from '../../sercives/user/user-thunks';
 import defaultRecipe from '../../data/default-recipe';
+import { Link } from 'react-router-dom';
 
 
 const Recipe = ({ recipe = defaultRecipe }) => {
@@ -30,9 +31,11 @@ const Recipe = ({ recipe = defaultRecipe }) => {
       <div className='card'>
         <img className='card-img-top' src={recipe.image} alt={recipeImg} />
         <div className='card-body'>
-          <h5 className='card-title'>
-            {recipe.title}
-          </h5>
+          <Link to={`/feed/${recipe._id}`} style={{ textDecoration: 'none' }}>
+            <h5 className='card-title'>
+              {recipe.title}
+            </h5>
+          </Link>
           <p className='card-text'>
             {recipe.description}
           </p>

@@ -14,6 +14,7 @@ import CurrentUserContext from './redux/currentUserContext';
 import Register from './components/Register/Register';
 import Login from './components/Login/Login';
 import ImageDetails from './components/ImageDetails/ImageDetails';
+import RecipeView from './components/RecipeView/RecipeView';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               <Route path='/*' element={<Home />} />
               <Route path='/mr/:imageId' element={<MakeRecipe />} />
               <Route path='/feed' element={<Feed />} />
+              <Route path='/feed/:recipeId' element={<RecipeView />} />
               <Route path='/search' element={<Search />} />
               <Route path='/search/:term' element={<Search />} />
               <Route path='/details/:imageId' element={<ImageDetails />} />

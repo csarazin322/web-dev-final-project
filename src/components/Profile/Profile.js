@@ -14,11 +14,16 @@ const Profile = () => {
   const { currentUser } = useSelector((state) => state.users)
   const { username } = useParams()
   const [profile, setProfile] = useState(defaultUser)
+  const [changedUser, setChangedUser] = useState({ ...currentUser })
   const [chefCreatedRecipes, setChefCreatedRecipes] = useState([])
   const [consumerSavedRecipes, setConsumerSavedRecipes] = useState([])
   const [consumerChefsFollowing, setConsumerChefsFollowing] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const saveProfileChanges = async () => {
+    await dispatch(updateUserThunk({ ...currentUser, firstName: changedUser.firstName, lastName: changedUser.lastName, email: changedUser.email, password: changedUser.password }))
+  }
 
   const getProfile = useCallback(async () => {
     console.log('getting profile')
@@ -198,6 +203,62 @@ const Profile = () => {
             </div>
           </div>
         )}
+
+      {
+        currentUser && profile && currentUser._id === profile._id ?
+          (
+            <>
+              <div className='row mb-2'>
+                <h4 className='col-12'>
+                  Edit Your Profile
+                </h4>
+              </div><div className='row mb-2'>
+                <div className='col-6'>
+                  <div className='form-floating'>
+                    <input
+                      value={changedUser.firstName} onChange={(e) => setChangedUser({ ...changedUser, firstName: e.target.value })}
+                      id='first_name' type="text" className="form-control" placeholder="First Name" aria-label="First Name" />
+                    <label for='first_name'>First Name</label>
+                  </div>
+                </div>
+                <div className='col-6'>
+                  <div className='form-floating'>
+                    <input
+                      value={changedUser.lastName} onChange={(e) => setChangedUser({ ...changedUser, lastName: e.target.value })}
+                      id='last_name' type="text" className="form-control" placeholder="Last Name" aria-label="Last Name" />
+                    <label for='last_name'>Last Name</label>
+                  </div>
+                </div>
+              </div>
+
+              <div className='row mb-2'>
+                <div className='col-6'>
+                  <div className='form-floating'>
+                    <input
+                      value={changedUser.email} onChange={(e) => setChangedUser({ ...changedUser, email: e.target.value })}
+                      id='email' type="text" className="form-control" placeholder="email" aria-label="email" />
+                    <label for='email'>Email</label>
+                  </div>
+                </div>
+                <div className='col-6'>
+                  <div className='form-floating'>
+                    <input
+                      value={changedUser.password} onChange={(e) => setChangedUser({ ...changedUser, password: e.target.value })}
+                      id='password' type="text" className="form-control" placeholder="Password" aria-label="Password" />
+                    <label for='password'>Password</label>
+                  </div>
+                </div>
+              </div>
+
+              <div className='row mb-2'>
+                <div className='col-12'>
+                  <button className='btn btn-warning float-end' onClick={saveProfileChanges}>Save Changes</button>
+                </div>
+              </div>
+            </>
+          ) :
+          ''
+      }
     </div>
   );
 
