@@ -1,41 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ImageDetails.module.css';
 import MakeRecipe from '../MakeRecipe/MakeRecipe';
-import { getDetailsById } from '../../sercives/shutterstock/shutterstock-services';
-import { useDispatch } from 'react-redux';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { imageSearchById } from '../../sercives/shutterstock/shutterstock-services';
 
 
 
-const ImageDetails = (imageId = '') => {
+const ImageDetails = () => {
+  const { imageId } = useParams();
+  const navigate = useNavigate();
+  const [searchId, setSearchId] = useState(imageId)
+  const [results, setResults] = useState(null)
 
-  cons [sstkResponse, setSstkResponse] = useState({});
-
-  const getImageDetails = async () => {
-    const response = await getDetailsById(imageId);
-    setSstkResponse(response);
+  const getPassedImage = async () => {
+    if (searchId) {
+      const response = await imageSearchById(searchId).then((data) => {
+        console.log(data)
+        setResults(data)
+        console.log('these are results')
+        console.log(results)
+      })
+    }
   }
 
   useEffect(() => {
-    console.log('getting image details')
-    getImageDetails()
-  }, [])
+    getPassedImage()
+  }, [searchId])
 
   return (
     <div className={styles.ImageDetails}>
-      <div className='row mb-2'>
-        <img className='card-img' src={sstkResponse.preview_1000.url}></img>
+      <div className='row mt-3 mb-3'>
+        <div className='col-12'>
+          <h3>{`Details for Image with ID: ${searchId}`}</h3>
+        </div>
       </div>
-      <div className='row mb-2'>
-        <h6>{sstkResponse.description}</h6>
-        <p>Image Type: {sstkResponse.image_type}</p> 
-        <p>Size: {sstkResponse.preview_1000.width}x{sstkResponse.preview_1000.height}</p>
+
+      <div className='row mb-3'>
+        <div className='col-12'>
+          <div className='card'>
+            <img className='card-img' src={(results) ? results.assets.preview_1000.url : ''} a='invalid url' />
+          </div>
+        </div>
+        <div className='col-12'>
+          <p>{results ? results.description : ''}</p>
+        </div>
       </div>
-      <div className='row mb-2'>
-        <Link to={`/mr/imageUrl/${sstkResponse.preview_1000.url}`}>
-          <button className='btn btn-success float-end'>Select this image</button>
-        </Link>
-      </div>
+
+
+      <Link to={`/mr/${imageId}`}>
+        <button className='btn btn-primary float-end'>Create Recipe!</button>
+      </Link>
     </div>
   );
 }

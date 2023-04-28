@@ -17,18 +17,6 @@ const Register = () => {
     login.payload ? navigate('/profile') : console.log('incomplete profile or users with the same email or username exist')
   }
 
-  // const handleOnChange1 = (e) => {
-  //   console.log("at 1")
-  //   console.log(e)
-  //   setNewUser({ ...newUser, isChef: !e.target.checked })
-  // }
-
-  // const handleOnChange2 = (e) => {
-  //   console.log("at 2")
-  //   console.log(e)
-  //   setNewUser({ ...newUser, isChef: e.target.checked })
-  // }
-
   return (
     < div className={styles.Register} >
       <h4 className='mt-4 mb-3'>Register New User</h4>

@@ -46,7 +46,7 @@ const Search = () => {
       <div className='row mb-3'>
         {
           results.map((imgResult) => (
-            <div className='col-3 mb-2'>
+            <div className='col-3 mb-2' onClick={() => navigate(`/details/${imgResult.id}`)}>
               <div className='card'>
                 <img className='card-img' src={imgResult.assets.preview_1000.url} alt='loading'></img>
               </div>
